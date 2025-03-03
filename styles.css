@@ -3,3 +3,8 @@ body {
     padding: 10px;
 }
 
+#text-output {
+    width: 75%;
+    display: block; /* Ensures margin: auto works */
+    margin: 0 auto;
+}
