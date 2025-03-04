@@ -5,6 +5,20 @@ body {
 
 #text-output {
     width: 75%;
+    height:200px;
     display: block;
     margin: 0 auto;
+    font-size: 20px;
+}
+
+.words-containers {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.word-box {
+    padding: 20px;
+    margin: 20px;
+    font-size: 30px;
 }
