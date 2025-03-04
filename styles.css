@@ -17,10 +17,12 @@ body {
     padding-top: 20px;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .word-box {
     padding: 20px;
-    margin: 20px;
+    margin: 15px;
+    margin-top: 0px;
     font-size: 30px;
 }
