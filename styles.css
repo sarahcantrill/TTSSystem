@@ -5,6 +5,6 @@ body {
 
 #text-output {
     width: 75%;
-    display: block; /* Ensures margin: auto works */
+    display: block;
     margin: 0 auto;
 }
