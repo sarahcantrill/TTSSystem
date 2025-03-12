@@ -1,0 +1,23 @@
+{
+  "name": "ttssystem",
+  "version": "1.0.0",
+  "description": "A repositry for the development of a Text-To-Speech System with a predicitve word algorithm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarahcantrill/TTSSystem.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarahcantrill/TTSSystem/issues"
+  },
+  "homepage": "https://github.com/sarahcantrill/TTSSystem#readme",
+  "dependencies": {
+    "ngram": "^0.0.3"
+  }
+}
