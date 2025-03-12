@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/sarahcantrill/TTSSystem#readme",
   "dependencies": {
+    "compromise": "^14.14.4",
     "ngram": "^0.0.3"
   }
 }

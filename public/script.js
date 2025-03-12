@@ -1,9 +1,11 @@
+import { getSuggestions } from "/src/models/ngramModel.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     const wordboxes = document.querySelectorAll(".word-box");
     const textOutput = document.getElementById("text-output");
     const resetButton = document.querySelector(".reset-btn");
     const undoButton = document.querySelector(".undo-btn");
-    const predictionsButton = document.querySelector("button-container");
+    const predictionsButton = document.querySelector(".button-container");
 
     //words clicked means they are added to the container
     wordboxes.forEach(button => {
@@ -37,9 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const suggestions = getSuggestions(input);
 
         suggestions.forEach(word => {
-            const buttons = document.creatElement('buttons');
-            button.textContent = words;
-            button.onClick = () => insertWord(words);
+            const buttons = document.createElement('buttons');
+            buttons.textContent = words;
+            buttons.onclick = () => insertWord(words);
             predictionsButton.appendChild(buttons);
 
         });
