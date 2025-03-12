@@ -44,3 +44,15 @@ body {
     border-radius: 10px;
     border-color: lightgray;
 }
+
+.more-options-btn {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: auto;
+    gap: 20px;
+    padding: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    border-color: lightgray;
+}
