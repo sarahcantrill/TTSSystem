@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const textOutput = document.getElementById("text-output");
     const resetButton = document.querySelector(".reset-btn");
     const undoButton = document.querySelector(".undo-btn");
+    const predictionsButton = document.querySelector("button-container");
 
     //words clicked means they are added to the container
     wordboxes.forEach(button => {
@@ -24,6 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
         textOutput.value = wordLength.join(" ") + " ";
     });
 
+    //event listener for input fiels to generate suggestions
+    document.getElementById('inputField').addEventListener('input', function () {
+        const userInput = this.value;
+        generateButtons(userInput);
+    })
+
+    
 
 });
 
