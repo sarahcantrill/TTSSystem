@@ -48,8 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
     //function to input predicitice button text into text input box 
     function insertWords(words) {
         textOutput.value += words + " ";
-        predictionsButton(textOutput.value);
+        generateButtons(textOutput.value);
     }
+
+    generateButtons('');
 
 });
 
