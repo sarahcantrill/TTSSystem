@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     //event listener for input fiels to generate suggestions
-    document.getElementById('inputField').addEventListener('input', function () {
+    document.getElementById('text-output').addEventListener('input', function () {
         const userInput = this.value;
         generateButtons(userInput);
     })
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         predictionsButton.innerHTML ='';
         const suggestions = getSuggestions(input);
 
-        suggestions.forEach(word => {
+        suggestions.forEach(words => {
             const buttons = document.createElement('buttons');
             buttons.textContent = words;
             buttons.onclick = () => insertWord(words);
