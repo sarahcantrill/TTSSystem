@@ -31,7 +31,25 @@ document.addEventListener("DOMContentLoaded", () => {
         generateButtons(userInput);
     })
 
-    
+    //function for word suggestion buttons generation
+    function generateButtons(input) {
+        predictionsButton.innerHTML ='';
+        const suggestions = getSuggestions(input);
+
+        suggestions.forEach(word => {
+            const buttons = document.creatElement('buttons');
+            button.textContent = words;
+            button.onClick = () => insertWord(words);
+            predictionsButton.appendChild(buttons);
+
+        });
+    }
+
+    //function to input predicitice button text into text input box 
+    function insertWords(words) {
+        textOutput.value += words + " ";
+        predictionsButton(textOutput.value);
+    }
 
 });
 
