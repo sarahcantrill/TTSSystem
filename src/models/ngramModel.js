@@ -28,11 +28,24 @@ export function getSuggestions(input) {
    //  const words = doc.terms().out('array'); //MAY NEED TO IMPLEMENT BACK 
    // const suggestions = words.filter(term => term.text.toLowerCase().startsWith(input.toLowerCase())).out('array');
 
-    const inputWords = input.trim().split(" ")
+    const inputWords = input.trim().split(" ");
     const lastWord = words[words.length - 1].toLowerCase(); 
-    const previousWord = inputWords.length > 1 ? inputWords[inputWords.length - 2].toLowerCase() : null
-    const suggestions = corpusWords.filter(word => word.toLowerCase().startsWith(lastWord));
+    const previousWord = inputWords.length > 1 ? inputWords[inputWords.length - 2].toLowerCase() : null;
+    //const suggestions = corpusWords.filter(word => word.toLowerCase().startsWith(lastWord));
 
+    let suggestions = [];
+
+    if (input.endsWith(" ")) {
+      const lastCompleteWord = previousWord || lastWord
+      if (bigramModel[lastCompleteWord]) {
+        suggestions = [...bigramModel[lastCompleteWord]]
+      }
+  
+      // Add some common words if we don't have enough suggestions
+      if (suggestions.length < 5) {
+        suggestions = [...suggestions, ...corpusWords.filter((word) => !suggestions.includes(word))]
+      }
+    }
 
       if (!lastWord) {
         // Return default suggestions if no word is present
