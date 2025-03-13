@@ -1,5 +1,5 @@
 //import { NGram } from 'https://cdnjs.cloudflare.com/ajax/libs/ngram/2.0.0/ngram.min.js'; 
-//import nlp from "compromise";
+import nlp from "/node_modules/compromise";
 
 const corpus = "this is some ssample text for training"; //can be expanded for better predicitions
 
