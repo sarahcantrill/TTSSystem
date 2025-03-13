@@ -8,11 +8,15 @@ const corpus = "this is some ssample text for training"; //can be expanded for b
 export function getSuggestions(input) {
     if (!input.trim()) return [];
 
-    const doc = nlp(corpus); //predicition based on input 
-    const words = doc
-        .terms()
-        .filter(term => term.text.toLowerCase().startsWith(input.toLowerCase()))
-        .out('array')
+    const doc = nlp(input); //predicition based on input 
+    const words = doc.terms().out('array'); // get an array of words
+    const suggestions = words.filter(word => word.toLowerCase().startsWith(input.toLowerCase())); // filter by starting letter/substring
 
-        return words.slice(0, 10);
+      //  .filter(term => term.text.toLowerCase().startsWith(input.toLowerCase()))
+      //  .out('array')
+
+        console.log('Input received:', input);
+        console.log('Suggestions:', words);
+
+        return suggestions.slice(0, 10);
 }

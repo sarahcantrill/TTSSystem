@@ -1,3 +1,4 @@
+//alert("script.js loaded");
 import { getSuggestions } from "/src/models/ngramModel.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -38,18 +39,18 @@ document.addEventListener("DOMContentLoaded", () => {
         predictionsButton.innerHTML ='';
         const suggestions = getSuggestions(input);
 
-        suggestions.forEach(words => {
-            const buttons = document.createElement('buttons');
-            buttons.textContent = words;
-            buttons.onclick = () => insertWord(words);
-            predictionsButton.appendChild(buttons);
+        suggestions.forEach(word => {
+            const button = document.createElement('button');
+            button.textContent = word;
+            button.onclick = () => insertWord(word);
+            predictionsButton.appendChild(button);
 
         });
     }
 
     //function to input predicitice button text into text input box 
-    function insertWords(words) {
-        textOutput.value += words + " ";
+    function insertWord(word) {
+        textOutput.value += word + " ";
         generateButtons(textOutput.value);
     }
 
