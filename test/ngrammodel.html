@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Assistance App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #textArea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 18px;
+        }
+        #wordButtonsContainer {
+            margin-bottom: 20px;
+        }
+        .button-category {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .category-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        #wordButtons, .category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .word-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .control-button {
+            background-color: #2196F3;
+            color: white;
+            margin-right: 10px;
+        }
+        #controls {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .category-tab {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .category-tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #tabsContainer {
+            margin-bottom: 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab-content {
+            border: 1px solid #ddd;
+            border-top: none;
+            padding: 15px;
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .page-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+        .page-button {
+            background-color: #607D8B;
+            color: white;
+        }
+        .page-indicator {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Speech Assistance App</h1>
+    <textarea id="textArea" readonly></textarea>
+    
+    <div id="controls">
+        <button id="readButton" class="control-button">Read Text</button>
+        <button id="clearButton" class="control-button">Clear Text</button>
+        <button id="backspaceButton" class="control-button">Backspace</button>
+        <button id="spaceButton" class="control-button">Space</button>
+        <button id="periodButton" class="control-button">Period</button>
+        <button id="questionButton" class="control-button">?</button>
+        <button id="exclamationButton" class="control-button">!</button>
+        <button id="commaButton" class="control-button">,</button>
+    </div>
+    
+    <div id="tabsContainer">
+        <div class="category-tab active" data-tab="predictions">Predictions</div>
+        <div class="category-tab" data-tab="common">Common Words</div>
+        <div class="category-tab" data-tab="questions">Questions</div>
+        <div class="category-tab" data-tab="needs">Needs</div>
+        <div class="category-tab" data-tab="responses">Responses</div>
+    </div>
+    
+    <div id="wordButtonsContainer">
+        <div id="predictions" class="tab-content active">
+            <div class="category-title">Suggested Next Words</div>
+            <div id="wordButtons" class="category-buttons"></div>
+            <div class="page-buttons">
+                <button id="prevPredictions" class="page-button">Previous</button>
+                <span id="predictionPageIndicator" class="page-indicator">Page 1/1</span>
+                <button id="nextPredictions" class="page-button">Next</button>
+            </div>
+        </div>
+        
+        <div id="common" class="tab-content">
+            <div class="button-category">
+                <div class="category-title">Pronouns</div>
+                <div id="pronounButtons" class="category-buttons"></div>
+            </div>
+            <div class="button-category">
+                <div class="category-title">Common Verbs</div>
+                <div id="verbButtons" class="category-buttons"></div>
+            </div>
+            <div class="button-category">
+                <div class="category-title">Common Adjectives</div>
+                <div id="adjectiveButtons" class="category-buttons"></div>
+            </div>
+            <div class="button-category">
+                <div class="category-title">Prepositions</div>
+                <div id="prepositionButtons" class="category-buttons"></div>
+            </div>
+        </div>
+        
+        <div id="questions" class="tab-content">
+            <div class="button-category">
+                <div class="category-title">Question Starters</div>
+                <div id="questionStarterButtons" class="category-buttons"></div>
+            </div>
+            <div class="button-category">
+                <div class="category-title">Common Questions</div>
+                <div id="commonQuestionButtons" class="category-buttons"></div>
+            </div>
+        </div>
+        
+        <div id="needs" class="tab-content">
+            <div class="button-category">
+                <div class="category-title">Basic Needs</div>
+                <div id="basicNeedButtons" class="category-buttons"></div>
+            </div>
+            <div class="button-category">
+                <div class="category-title">Classroom Needs</div>
+                <div id="classroomNeedButtons" class="category-buttons"></div>
+            </div>
+        </div>
+        
+        <div id="responses" class="tab-content">
+            <div class="button-category">
+                <div class="category-title">Positive Responses</div>
+                <div id="positiveResponseButtons" class="category-buttons"></div>
+            </div>
+            <div class="button-category">
+                <div class="category-title">Negative Responses</div>
+                <div id="negativeResponseButtons" class="category-buttons"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // N-gram model implementation
+        class NGramModel {
+            constructor(n = 2) {
+                this.n = n;
+                this.frequencies = {};
+                this.startGrams = {};
+                this.commonWords = new Set();
+            }
+
+            // Train the model with a corpus of text
+            train(text) {
+                const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+                
+                for (const sentence of sentences) {
+                    const words = sentence.toLowerCase().trim().split(/\s+/).filter(w => w.length > 0);
+                    if (words.length < this.n) continue;
+                    
+                    // Record all words to common words set
+                    words.forEach(word => this.commonWords.add(word));
+                    
+                    // Count start sequences
+                    const startSequence = words.slice(0, this.n - 1).join(' ');
+                    this.startGrams[startSequence] = (this.startGrams[startSequence] || 0) + 1;
+                    
+                    // Count n-gram frequencies
+                    for (let i = 0; i <= words.length - this.n; i++) {
+                        const context = words.slice(i, i + this.n - 1).join(' ');
+                        const nextWord = words[i + this.n - 1];
+                        
+                        if (!this.frequencies[context]) {
+                            this.frequencies[context] = {};
+                        }
+                        
+                        this.frequencies[context][nextWord] = (this.frequencies[context][nextWord] || 0) + 1;
+                    }
+                }
+            }
+
+            // Get next word suggestions based on previous words
+            predict(context, maxSuggestions = 30) {
+                // Get last n-1 words from context
+                let suggestions = [];
+                const words = context.toLowerCase().trim().split(/\s+/);
+                
+                // If we have no context, return sentence starters
+                if (words.length === 0) {
+                    return this.getStartWords(maxSuggestions);
+                }
+                
+                // Get the most recent context
+                const relevantContext = words.slice(-this.n + 1).join(' ');
+                
+                // If we have this context, use it for predictions
+                if (this.frequencies[relevantContext]) {
+                    suggestions = Object.entries(this.frequencies[relevantContext])
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, maxSuggestions)
+                        .map(entry => entry[0]);
+                }
+                
+                // If we don't have enough suggestions, add some common words
+                if (suggestions.length < maxSuggestions) {
+                    // Find single-word contexts
+                    const lastWord = words[words.length - 1];
+                    if (this.frequencies[lastWord]) {
+                        const singleWordSuggestions = Object.entries(this.frequencies[lastWord])
+                            .sort((a, b) => b[1] - a[1])
+                            .map(entry => entry[0]);
+                            
+                        for (const word of singleWordSuggestions) {
+                            if (!suggestions.includes(word)) {
+                                suggestions.push(word);
+                                if (suggestions.length >= maxSuggestions) break;
+                            }
+                        }
+                    }
+                }
+                
+                // If we still need more suggestions, add common words
+                if (suggestions.length < maxSuggestions) {
+                    const commonWords = Array.from(this.commonWords)
+                        .filter(word => !suggestions.includes(word))
+                        .sort(() => 0.5 - Math.random());
+                        
+                    suggestions = [...suggestions, ...commonWords.slice(0, maxSuggestions - suggestions.length)];
+                }
+                
+                return suggestions;
+            }
+            
+            // Get common sentence starters
+            getStartWords(maxSuggestions = 30) {
+                const startWords = Object.entries(this.startGrams)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, maxSuggestions)
+                    .map(entry => entry[0]);
+                    
+                return startWords.length > 0 ? startWords : Array.from(this.commonWords).slice(0, maxSuggestions);
+            }
+        }
+
+        // DOM elements
+        const textArea = document.getElementById('textArea');
+        const wordButtons = document.getElementById('wordButtons');
+        const readButton = document.getElementById('readButton');
+        const clearButton = document.getElementById('clearButton');
+        const backspaceButton = document.getElementById('backspaceButton');
+        const spaceButton = document.getElementById('spaceButton');
+        const periodButton = document.getElementById('periodButton');
+        const questionButton = document.getElementById('questionButton');
+        const exclamationButton = document.getElementById('exclamationButton');
+        const commaButton = document.getElementById('commaButton');
+        const prevPredictionsButton = document.getElementById('prevPredictions');
+        const nextPredictionsButton = document.getElementById('nextPredictions');
+        const predictionPageIndicator = document.getElementById('predictionPageIndicator');
+
+        // Tab elements
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Initialize N-gram model
+        const ngram = new NGramModel(3); // Trigram model
+
+        // Current state
+        let currentPredictions = [];
+        let currentPredictionPage = 0;
+        let wordsPerPage = 12;
+
+        // Training corpus - classroom-related sentences
+        const trainingText = `
+            I need help with this problem.
+            Can you explain that again?
+            I don't understand the question.
+            May I go to the bathroom please?
+            I finished my assignment.
+            The answer is incorrect.
+            Can you repeat that?
+            I need more time.
+            When is the test?
+            I forgot my homework.
+            Could you speak slower please?
+            I'm not feeling well today.
+            Can I ask a question?
+            I need a pencil.
+            What page are we on?
+            I can't see the board.
+            Could you help me?
+            I'm ready to present.
+            What's the deadline?
+            I didn't hear the instructions.
+            Can I work with a partner?
+            I need clarification.
+            May I get a drink of water?
+            What should I do next?
+            Can you check my work?
+            I need help with this problem.
+            My computer isn't working.
+            Could you explain the assignment?
+            When is it due?
+            I need to use the restroom.
+            I'm having trouble with this exercise.
+            Could you please repeat the question?
+            I don't feel well.
+            Can I get some help?
+            Would you mind explaining that again?
+            I'm confused about the instructions.
+            Can I borrow a pencil?
+            I need more paper.
+            What time is lunch?
+            When is the bell going to ring?
+            I left my textbook at home.
+            Can you help me with this word?
+            I need to call my parents.
+            May I sharpen my pencil?
+            I don't have my homework.
+            Can I go to the nurse?
+            I finished early.
+            What time does class end?
+            Is this correct?
+            I need to take a break.
+            Can you write that on the board?
+            I don't have my calculator.
+            What's the answer to number five?
+            Where should I put my assignment?
+            Can you slow down please?
+            I need to charge my laptop.
+            I can't find my notebook.
+            What page are we on?
+            I left my lunch at home.
+            Can I have an extension?
+            I'm having trouble logging in.
+            I need to use the computer.
+            Can I get a pass to the library?
+            I'm having trouble seeing the board.
+            What's the homework for tonight?
+            I didn't bring my gym clothes.
+            Could you turn up the volume?
+            I need a different book.
+            Can I sit somewhere else?
+            I need to talk to the counselor.
+            My backpack is missing.
+            Can I have a tissue?
+            I don't have my permission slip.
+            What's the date today?
+            Can I use the restroom?
+            I'm having trouble understanding.
+            Can I go to my locker?
+        `;
+
+        // Categories of words
+        const wordCategories = {
+            pronouns: ["I", "you", "he", "she", "it", "we", "they", "my", "your", "his", "her", "our", "their", "this", "that", "these", "those", "myself", "yourself"],
+            verbs: ["am", "is", "are", "was", "were", "have", "has", "had", "do", "does", "did", "can", "could", "will", "would", "should", "may", "might", "must", "need", "want", "like", "help", "go", "come", "see", "look", "hear", "say", "tell", "speak", "think", "know", "understand", "feel", "get", "take", "give", "put", "make", "write", "read", "work", "play", "eat", "drink", "sleep", "sit", "stand"],
+            adjectives: ["good", "bad", "big", "small", "hot", "cold", "new", "old", "high", "low", "happy", "sad", "fast", "slow", "easy", "hard", "early", "late", "loud", "quiet", "sick", "healthy", "hungry", "thirsty", "tired", "ready", "important", "difficult", "confused", "clear", "correct", "wrong", "full", "empty", "busy", "free", "better", "worse", "right", "left"],
+            prepositions: ["in", "on", "at", "to", "from", "with", "without", "for", "of", "by", "about", "under", "over", "between", "among", "through", "across", "behind", "in front of", "next to", "near", "far from", "before", "after", "during", "until", "since"],
+            questionStarters: ["what", "where", "when", "why", "who", "how", "which", "whose", "can", "could", "may", "will", "would", "should", "do", "does", "did", "is", "are", "was", "were", "have", "has", "had"],
+            commonQuestions: [
+                "Can you help me?", 
+                "Can you explain that?", 
+                "What does this mean?", 
+                "When is it due?", 
+                "May I go to the bathroom?", 
+                "Can I have more time?", 
+                "What page are we on?", 
+                "How do I do this?", 
+                "Could you repeat that?", 
+                "Where should I put this?", 
+                "What's the homework?", 
+                "When is the test?", 
+                "How do you spell that?", 
+                "What time is lunch?", 
+                "Is this correct?", 
+                "Can I work with a partner?"
+            ],
+            basicNeeds: [
+                "I need help", 
+                "I need a break", 
+                "I need water", 
+                "I don't understand", 
+                "I feel sick", 
+                "I'm tired", 
+                "I'm hungry", 
+                "I'm thirsty", 
+                "I'm confused", 
+                "I can't see", 
+                "I can't hear", 
+                "I need to call home", 
+                "I need the bathroom", 
+                "I need medicine",
+                "I need more time",
+                "I'm too hot",
+                "I'm too cold"
+            ],
+            classroomNeeds: [
+                "I need a pencil", 
+                "I need paper", 
+                "I need my book", 
+                "I forgot my homework", 
+                "I need a calculator", 
+                "I need a computer", 
+                "I can't see the board", 
+                "I need a charger", 
+                "I lost my notebook", 
+                "I need to sharpen my pencil", 
+                "I need to print", 
+                "I need headphones", 
+                "I need the WiFi password",
+                "I need an eraser",
+                "I need a ruler",
+                "I need scissors",
+                "I need glue"
+            ],
+            positiveResponses: [
+                "Yes", 
+                "Thank you", 
+                "I understand", 
+                "I agree", 
+                "That helps", 
+                "I got it", 
+                "I'll try", 
+                "Sounds good", 
+                "That makes sense",
+                "I'm ready",
+                "I finished",
+                "I can do that",
+                "I like that",
+                "That's right",
+                "Good job",
+                "I'm excited"
+            ],
+            negativeResponses: [
+                "No", 
+                "I don't understand", 
+                "I disagree", 
+                "That doesn't help", 
+                "I'm still confused", 
+                "I can't do it", 
+                "Too difficult", 
+                "Not sure", 
+                "I need more help",
+                "I'm not ready",
+                "I'm not finished",
+                "That's wrong",
+                "I don't like that",
+                "I'm worried",
+                "I'm frustrated",
+                "Too fast"
+            ]
+        };
+
+        // Train the model
+        ngram.train(trainingText);
+
+        // Add word to text area
+        function addWord(word) {
+            const needsSpace = textArea.value.length > 0 && 
+                               textArea.value[textArea.value.length - 1] !== ' ' &&
+                               !['.',',','?','!'].includes(textArea.value[textArea.value.length - 1]);
+            
+            if (needsSpace) {
+                textArea.value += ' ';
+            }
+            
+            textArea.value += word;
+            
+            // Update word buttons based on new context
+            updatePredictions();
+        }
+
+        // Update word predictions and pagination
+        function updatePredictions() {
+            const currentText = textArea.value;
+            currentPredictions = ngram.predict(currentText, 100); // Get more predictions
+            currentPredictionPage = 0;
+            displayCurrentPredictionPage();
+        }
+
+        // Display current page of predictions
+        function displayCurrentPredictionPage() {
+            const startIndex = currentPredictionPage * wordsPerPage;
+            const endIndex = startIndex + wordsPerPage;
+            const pageWords = currentPredictions.slice(startIndex, endIndex);
+            
+            // Update page indicator
+            const totalPages = Math.ceil(currentPredictions.length / wordsPerPage) || 1;
+            predictionPageIndicator.textContent = `Page ${currentPredictionPage + 1}/${totalPages}`;
+            
+            // Update buttons
+            wordButtons.innerHTML = '';
+            pageWords.forEach(word => {
+                const button = document.createElement('button');
+                button.textContent = word;
+                button.className = 'word-button';
+                button.onclick = () => addWord(word);
+                wordButtons.appendChild(button);
+            });
+        }
+
+        // Navigate to previous page of predictions
+        function previousPredictionPage() {
+            if (currentPredictionPage > 0) {
+                currentPredictionPage--;
+                displayCurrentPredictionPage();
+            }
+        }
+
+        // Navigate to next page of predictions
+        function nextPredictionPage() {
+            const totalPages = Math.ceil(currentPredictions.length / wordsPerPage) || 1;
+            if (currentPredictionPage < totalPages - 1) {
+                currentPredictionPage++;
+                displayCurrentPredictionPage();
+            }
+        }
+
+        // Initialize category buttons
+        function initializeCategoryButtons() {
+            // Pronouns
+            populateCategoryButtons('pronounButtons', wordCategories.pronouns);
+            
+            // Verbs
+            populateCategoryButtons('verbButtons', wordCategories.verbs);
+            
+            // Adjectives
+            populateCategoryButtons('adjectiveButtons', wordCategories.adjectives);
+            
+            // Prepositions
+            populateCategoryButtons('prepositionButtons', wordCategories.prepositions);
+            
+            // Question starters
+            populateCategoryButtons('questionStarterButtons', wordCategories.questionStarters);
+            
+            // Common questions
+            populateCategoryButtons('commonQuestionButtons', wordCategories.commonQuestions);
+            
+            // Basic needs
+            populateCategoryButtons('basicNeedButtons', wordCategories.basicNeeds);
+            
+            // Classroom needs
+            populateCategoryButtons('classroomNeedButtons', wordCategories.classroomNeeds);
+            
+            // Positive responses
+            populateCategoryButtons('positiveResponseButtons', wordCategories.positiveResponses);
+            
+            // Negative responses
+            populateCategoryButtons('negativeResponseButtons', wordCategories.negativeResponses);
+        }
+
+        // Populate category buttons
+        function populateCategoryButtons(containerId, words) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            words.forEach(word => {
+                const button = document.createElement('button');
+                button.textContent = word;
+                button.className = 'word-button';
+                button.onclick = () => {
+                    // If it's a phrase, replace text area content
+                    if (word.includes(' ')) {
+                        textArea.value = word;
+                    } else {
+                        addWord(word);
+                    }
+                    
+                    // Switch back to predictions tab
+                    switchTab('predictions');
+                };
+                container.appendChild(button);
+            });
+        }
+
+        // Tab switching
+        function switchTab(tabId) {
+            // Update tab active states
+            categoryTabs.forEach(tab => {
+                if (tab.dataset.tab === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Update content visibility
+            tabContents.forEach(content => {
+                if (content.id === tabId) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        // Text-to-speech function
+        function readText() {
+            if (textArea.value.trim() === '') return;
+            
+            const speech = new SpeechSynthesisUtterance(textArea.value);
+            speech.rate = 0.9; // Slightly slower than default
+            speech.pitch = 1;
+            speech.volume = 1;
+            window.speechSynthesis.speak(speech);
+        }
+
+        // Clear text
+        function clearText() {
+            textArea.value = '';
+            updatePredictions();
+            switchTab('predictions');
+        }
+
+        // Backspace function - remove last word or character
+        function backspace() {
+            const text = textArea.value;
+            if (text.length === 0) return;
+            
+            // Remove last word or character
+            const lastSpace = text.lastIndexOf(' ');
+            if (lastSpace >= 0) {
+                textArea.value = text.substring(0, lastSpace);
+            } else {
+                textArea.value = '';
+            }
+            
+            updatePredictions();
+        }
+
+        // Add space
+        function addSpace() {
+            if (textArea.value.length > 0 && textArea.value[textArea.value.length - 1] !== ' ') {
+                textArea.value += ' ';
+                updatePredictions();
+            }
+        }
+
+        // Add punctuation
+        function addPunctuation(mark) {
+            if (textArea.value.length > 0) {
+                // Remove trailing space if there is one
+                if (textArea.value[textArea.value.length - 1] === ' ') {
+                    textArea.value = textArea.value.trim();
+                }
+                
+                // Add punctuation if it's not already there
+                if (textArea.value[textArea.value.length - 1] !== mark) {
+                    textArea.value += mark;
+                }
+                
+                // Add space after period, question mark, or exclamation
+                if (['.', '?', '!'].includes(mark)) {
+                    textArea.value += ' ';
+                }
+                
+                updatePredictions();
+            }
+        }
+
+        // Event listeners
+        readButton.addEventListener('click', readText);
+        clearButton.addEventListener('click', clearText);
+        backspaceButton.addEventListener('click', backspace);
+        spaceButton.addEventListener('click', addSpace);
+        periodButton.addEventListener('click', () => addPunctuation('.'));
+        questionButton.addEventListener('click', () => addPunctuation('?'));
+        exclamationButton.addEventListener('click', () => addPunctuation('!'));
+        commaButton.addEventListener('click', () => addPunctuation(','));
+        prevPredictionsButton.addEventListener('click', previousPredictionPage);
+        nextPredictionsButton.addEventListener('click', nextPredictionPage);
+
+        // Tab event listeners
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchTab(tab.dataset.tab);
+            });
+        });
+
+        // Initialize the app
+        initializeCategoryButtons();
+        updatePredictions();
+
+        // Save user phrases for future sessions
+        function saveUserPhrase(phrase) {
+            let userPhrases = JSON.parse(localStorage.getItem('userPhrases') || '[]');
+            if (!userPhrases.includes(phrase)) {
+                userPhrases.push(phrase);
+                localStorage.setItem('userPhrases', JSON.stringify(userPhrases));
+            }
+        }
+    </script>
+</body>
+</html>

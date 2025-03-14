@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Assistant</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .text-area {
+            width: 100%;
+            min-height: 150px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            padding: 15px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .control-btn {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .control-btn:hover {
+            background-color: #2980b9;
+        }
+        .word-btn {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            margin: 5px;
+        }
+        .word-btn:hover {
+            background-color: #bdc3c7;
+        }
+        .tab {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .tab-btn {
+            background-color: #f1f1f1;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+        .tab-content.active {
+            display: flex;
+        }
+        .hint-section {
+            margin-top: 20px;
+        }
+        .hint-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .hint-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Speech Assistant</h1>
+        
+        <div class="text-area" id="textOutput" contenteditable="true"></div>
+        
+        <div class="controls">
+            <button id="speakBtn" class="control-btn">Speak</button>
+            <button id="clearBtn" class="control-btn">Clear</button>
+            <button id="backspaceBtn" class="control-btn">Backspace</button>
+            <button id="spaceBtn" class="control-btn">Space</button>
+            <button id="periodBtn" class="control-btn">.</button>
+            <button id="questionBtn" class="control-btn">?</button>
+            <button id="exclamationBtn" class="control-btn">!</button>
+        </div>
+        
+        <div class="tab">
+            <button class="tab-btn active" data-tab="starters">Sentence Starters</button>
+            <button class="tab-btn" data-tab="questions">Questions</button>
+            <button class="tab-btn" data-tab="responses">Responses</button>
+            <button class="tab-btn" data-tab="subjects">Subjects</button>
+            <button class="tab-btn" data-tab="verbs">Verbs</button>
+            <button class="tab-btn" data-tab="common">Common Words</button>
+        </div>
+        
+        <div id="starters" class="tab-content active">
+            <button class="word-btn">I</button>
+            <button class="word-btn">We</button>
+            <button class="word-btn">The</button>
+            <button class="word-btn">My</button>
+            <button class="word-btn">Please</button>
+            <button class="word-btn">Today</button>
+            <button class="word-btn">Yesterday</button>
+            <button class="word-btn">Tomorrow</button>
+            <button class="word-btn">Could</button>
+            <button class="word-btn">Would</button>
+            <button class="word-btn">Thank you</button>
+        </div>
+        
+        <div id="questions" class="tab-content">
+            <button class="word-btn">What</button>
+            <button class="word-btn">Where</button>
+            <button class="word-btn">When</button>
+            <button class="word-btn">Why</button>
+            <button class="word-btn">How</button>
+            <button class="word-btn">Can I</button>
+            <button class="word-btn">Could you</button>
+            <button class="word-btn">Do you</button>
+            <button class="word-btn">Is it</button>
+            <button class="word-btn">Will you</button>
+        </div>
+        
+        <div id="responses" class="tab-content">
+            <button class="word-btn">Yes</button>
+            <button class="word-btn">No</button>
+            <button class="word-btn">Maybe</button>
+            <button class="word-btn">I agree</button>
+            <button class="word-btn">I disagree</button>
+            <button class="word-btn">I understand</button>
+            <button class="word-btn">I don't understand</button>
+            <button class="word-btn">I need help</button>
+            <button class="word-btn">Good idea</button>
+            <button class="word-btn">Let me think</button>
+        </div>
+        
+        <div id="subjects" class="tab-content">
+            <button class="word-btn">I</button>
+            <button class="word-btn">you</button>
+            <button class="word-btn">we</button>
+            <button class="word-btn">they</button>
+            <button class="word-btn">he</button>
+            <button class="word-btn">she</button>
+            <button class="word-btn">it</button>
+            <button class="word-btn">the teacher</button>
+            <button class="word-btn">the class</button>
+            <button class="word-btn">the book</button>
+            <button class="word-btn">my assignment</button>
+        </div>
+        
+        <div id="verbs" class="tab-content">
+            <button class="word-btn">am</button>
+            <button class="word-btn">is</button>
+            <button class="word-btn">are</button>
+            <button class="word-btn">was</button>
+            <button class="word-btn">were</button>
+            <button class="word-btn">have</button>
+            <button class="word-btn">need</button>
+            <button class="word-btn">want</button>
+            <button class="word-btn">like</button>
+            <button class="word-btn">think</button>
+            <button class="word-btn">know</button>
+            <button class="word-btn">understand</button>
+            <button class="word-btn">finished</button>
+        </div>
+        
+        <div id="common" class="tab-content">
+            <button class="word-btn">and</button>
+            <button class="word-btn">or</button>
+            <button class="word-btn">but</button>
+            <button class="word-btn">because</button>
+            <button class="word-btn">with</button>
+            <button class="word-btn">without</button>
+            <button class="word-btn">to</button>
+            <button class="word-btn">from</button>
+            <button class="word-btn">in</button>
+            <button class="word-btn">on</button>
+            <button class="word-btn">at</button>
+            <button class="word-btn">by</button>
+            <button class="word-btn">for</button>
+        </div>
+        
+        <div class="hint-section">
+            <div class="hint-title">Next Word Suggestions:</div>
+            <div class="hint-buttons" id="nextWordSuggestions"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textOutput = document.getElementById('textOutput');
+            const speakBtn = document.getElementById('speakBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const backspaceBtn = document.getElementById('backspaceBtn');
+            const spaceBtn = document.getElementById('spaceBtn');
+            const periodBtn = document.getElementById('periodBtn');
+            const questionBtn = document.getElementById('questionBtn');
+            const exclamationBtn = document.getElementById('exclamationBtn');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const wordButtons = document.querySelectorAll('.word-btn');
+            const nextWordSuggestions = document.getElementById('nextWordSuggestions');
+            
+            // Simple language model for next word prediction
+            const languageModel = {
+                'I': ['am', 'have', 'need', 'want', 'think', 'would', 'could', 'will', 'feel', 'don\'t'],
+                'We': ['are', 'have', 'need', 'want', 'should', 'could', 'will', 'must', 'don\'t'],
+                'The': ['teacher', 'class', 'book', 'assignment', 'question', 'answer', 'test'],
+                'My': ['name', 'question', 'answer', 'book', 'pencil', 'notebook', 'desk'],
+                'Please': ['help', 'explain', 'show', 'tell', 'give', 'let'],
+                'What': ['is', 'are', 'was', 'were', 'will', 'should', 'can', 'do'],
+                'Where': ['is', 'are', 'was', 'were', 'will', 'should', 'can'],
+                'When': ['is', 'are', 'was', 'were', 'will', 'should', 'can'],
+                'Why': ['is', 'are', 'was', 'were', 'did', 'do', 'can\'t'],
+                'How': ['do', 'does', 'did', 'is', 'are', 'can', 'should', 'many', 'much'],
+                'need': ['to', 'help', 'a', 'more', 'some', 'time'],
+                'want': ['to', 'a', 'some', 'more'],
+                'am': ['not', 'going', 'trying', 'feeling', 'thinking', 'working'],
+                'is': ['not', 'the', 'a', 'my', 'your', 'this', 'that'],
+                'are': ['not', 'the', 'my', 'your', 'these', 'those', 'we'],
+                'have': ['a', 'the', 'my', 'your', 'this', 'that', 'to', 'not'],
+                'think': ['about', 'that', 'the', 'it', 'I', 'we', 'you'],
+                // Add more word associations as needed
+            };
+            
+            // Speech synthesis setup
+            const synth = window.speechSynthesis;
+            
+            // Text-to-speech function
+            function speak(text) {
+                if (synth.speaking) {
+                    synth.cancel();
+                }
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9; // Slightly slower than default
+                utterance.pitch = 1;
+                synth.speak(utterance);
+            }
+            
+            // Generate word suggestions based on last word
+            function generateSuggestions() {
+                // Clear current suggestions
+                nextWordSuggestions.innerHTML = '';
+                
+                // Get the current text
+                const currentText = textOutput.textContent.trim();
+                
+                if (currentText === '') {
+                    return;
+                }
+                
+                // Get the last word
+                const words = currentText.split(/\s+/);
+                const lastWord = words[words.length - 1].replace(/[.,!?;:'"]/, '');
+                
+                // Check if we have suggestions for this word
+                if (languageModel[lastWord]) {
+                    languageModel[lastWord].forEach(word => {
+                        const button = document.createElement('button');
+                        button.className = 'word-btn';
+                        button.textContent = word;
+                        button.addEventListener('click', function() {
+                            addWord(word);
+                        });
+                        nextWordSuggestions.appendChild(button);
+                    });
+                } else {
+                    // Default suggestions if no match
+                    ['the', 'a', 'is', 'are', 'was', 'were', 'have', 'has', 'to', 'and', 'but', 'or', 'because'].forEach(word => {
+                        const button = document.createElement('button');
+                        button.className = 'word-btn';
+                        button.textContent = word;
+                        button.addEventListener('click', function() {
+                            addWord(word);
+                        });
+                        nextWordSuggestions.appendChild(button);
+                    });
+                }
+            }
+            
+            // Function to add a word to the text area
+            function addWord(word) {
+                const currentText = textOutput.textContent;
+                
+                // Check if we need to add a space before the word
+                if (currentText !== '' && !currentText.endsWith(' ') && !currentText.endsWith('.') && 
+                    !currentText.endsWith('!') && !currentText.endsWith('?')) {
+                    textOutput.textContent += ' ';
+                }
+                
+                // If after punctuation, capitalize the first letter
+                if (currentText === '' || currentText.endsWith('.') || 
+                    currentText.endsWith('!') || currentText.endsWith('?')) {
+                    word = word.charAt(0).to// If after punctuation, capitalize the first letter
+                if (currentText === '' || currentText.endsWith('.') || 
+                    currentText.endsWith('!') || currentText.endsWith('?')) {
+                    word = word.charAt(0).toUpperCase() + word.slice(1);
+                }
+                
+                // Add the word to the text area
+                textOutput.textContent += word;
+                
+                // Generate new suggestions
+                generateSuggestions();
+            }
+            
+            // Event listeners for control buttons
+            speakBtn.addEventListener('click', function() {
+                speak(textOutput.textContent);
+            });
+            
+            clearBtn.addEventListener('click', function() {
+                textOutput.textContent = '';
+                nextWordSuggestions.innerHTML = '';
+            });
+            
+            backspaceBtn.addEventListener('click', function() {
+                const currentText = textOutput.textContent;
+                if (currentText.length > 0) {
+                    // Remove the last character
+                    textOutput.textContent = currentText.slice(0, -1);
+                    generateSuggestions();
+                }
+            });
+            
+            spaceBtn.addEventListener('click', function() {
+                textOutput.textContent += ' ';
+            });
+            
+            periodBtn.addEventListener('click', function() {
+                textOutput.textContent += '.';
+                generateSuggestions();
+            });
+            
+            questionBtn.addEventListener('click', function() {
+                textOutput.textContent += '?';
+                generateSuggestions();
+            });
+            
+            exclamationBtn.addEventListener('click', function() {
+                textOutput.textContent += '!';
+                generateSuggestions();
+            });
+            
+            // Tab switching functionality
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to current button
+                    this.classList.add('active');
+                    
+                    // Show the corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Word button functionality
+            wordButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    addWord(this.textContent);
+                });
+            });
+            
+            // Initialize suggestions
+            generateSuggestions();
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,7 +1,12 @@
 //import { NGram } from 'https://cdnjs.cloudflare.com/ajax/libs/ngram/2.0.0/ngram.min.js'; 
-import nlp from "/node_modules/compromise";
 
-const corpus = "this is some ssample text for training"; //can be expanded for better predicitions
+import nlp from "/node_modules/compromise";
+//import * as nlp from "/node_modules/compromise/builds/compromise.js";
+
+//const nlp = window.nlp
+
+
+const corpus = "this is some sample text for training"; //can be expanded for better predicitions
 
 //const ngramModel =  newNGram (corpus, {n:2}); //creates new ngram model
 

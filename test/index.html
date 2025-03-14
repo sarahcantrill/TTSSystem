@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Assistance App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #textArea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 18px;
+        }
+        #wordButtons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .word-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .control-button {
+            background-color: #2196F3;
+            color: white;
+            margin-right: 10px;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Speech Assistance App</h1>
+    <textarea id="textArea" readonly></textarea>
+    
+    <div id="controls">
+        <button id="readButton" class="control-button">Read Text</button>
+        <button id="clearButton" class="control-button">Clear Text</button>
+        <button id="backspaceButton" class="control-button">Backspace</button>
+        <button id="spaceButton" class="control-button">Space</button>
+        <button id="periodButton" class="control-button">Period</button>
+    </div>
+    
+    <h2>Word Suggestions</h2>
+    <div id="wordButtons"></div>
+
+    <script>
+        // Initial word sets
+        const wordSets = {
+            starters: ["I", "You", "We", "They", "The", "My", "Your", "This", "That", "Today", "Yesterday", "Tomorrow"],
+            subjects: ["I", "you", "we", "they", "he", "she", "it", "students", "teachers", "people", "class", "school"],
+            verbs: ["am", "is", "are", "was", "were", "have", "has", "will", "can", "could", "would", "should", "need", "want"],
+            objects: ["help", "time", "question", "answer", "break", "bathroom", "water", "understand", "homework", "test", "assignment", "project"],
+            conjunctions: ["and", "but", "or", "because", "so", "if", "when", "while", "after", "before", "since", "until"],
+            common: ["a", "the", "to", "in", "on", "with", "without", "for", "from", "by", "at", "about"]
+        };
+
+        // Common word transitions based on parts of speech
+        const transitions = {
+            starters: ["verbs", "common"],
+            subjects: ["verbs", "common"],
+            verbs: ["objects", "common"],
+            objects: ["conjunctions", "common"],
+            conjunctions: ["subjects", "common"],
+            common: ["subjects", "verbs", "objects"]
+        };
+
+        // DOM elements
+        const textArea = document.getElementById('textArea');
+        const wordButtons = document.getElementById('wordButtons');
+        const readButton = document.getElementById('readButton');
+        const clearButton = document.getElementById('clearButton');
+        const backspaceButton = document.getElementById('backspaceButton');
+        const spaceButton = document.getElementById('spaceButton');
+        const periodButton = document.getElementById('periodButton');
+
+        // Current state
+        let currentWordSet = 'starters';
+        let lastWord = '';
+
+        // Initialize buttons
+        function displayWordButtons(wordSet) {
+            wordButtons.innerHTML = '';
+            wordSets[wordSet].forEach(word => {
+                const button = document.createElement('button');
+                button.textContent = word;
+                button.className = 'word-button';
+                button.onclick = () => addWord(word);
+                wordButtons.appendChild(button);
+            });
+        }
+
+        // Add word to text area
+        function addWord(word) {
+            const needsSpace = textArea.value.length > 0 && 
+                               textArea.value[textArea.value.length - 1] !== ' ' &&
+                               textArea.value[textArea.value.length - 1] !== '.';
+            
+            if (needsSpace) {
+                textArea.value += ' ';
+            }
+            
+            textArea.value += word;
+            lastWord = word;
+            
+            // Determine next word set
+            let nextSet = 'common';
+            for (const [key, words] of Object.entries(wordSets)) {
+                if (words.includes(word)) {
+                    nextSet = key;
+                    break;
+                }
+            }
+            
+            // Get suggested next word types
+            const nextOptions = transitions[nextSet] || ['common'];
+            let nextWords = [];
+            nextOptions.forEach(option => {
+                nextWords = [...nextWords, ...wordSets[option]];
+            });
+            
+            // Remove duplicates and randomize slightly
+            nextWords = [...new Set(nextWords)];
+            nextWords.sort(() => Math.random() - 0.5);
+            
+            // Display next word buttons
+            wordButtons.innerHTML = '';
+            nextWords.slice(0, 12).forEach(word => {
+                const button = document.createElement('button');
+                button.textContent = word;
+                button.className = 'word-button';
+                button.onclick = () => addWord(word);
+                wordButtons.appendChild(button);
+            });
+        }
+
+        // Text-to-speech function
+        function readText() {
+            if (textArea.value.trim() === '') return;
+            
+            const speech = new SpeechSynthesisUtterance(textArea.value);
+            speech.rate = 0.9; // Slightly slower than default
+            speech.pitch = 1;
+            speech.volume = 1;
+            window.speechSynthesis.speak(speech);
+        }
+
+        // Clear text
+        function clearText() {
+            textArea.value = '';
+            displayWordButtons('starters');
+        }
+
+        // Backspace function
+        function backspace() {
+            const text = textArea.value;
+            if (text.length === 0) return;
+            
+            // Remove last word or character
+            const lastSpace = text.lastIndexOf(' ');
+            if (lastSpace >= 0) {
+                textArea.value = text.substring(0, lastSpace);
+            } else {
+                textArea.value = '';
+            }
+            
+            // Reset to starter words if empty
+            if (textArea.value === '') {
+                displayWordButtons('starters');
+            }
+        }
+
+        // Add space
+        function addSpace() {
+            if (textArea.value.length > 0 && textArea.value[textArea.value.length - 1] !== ' ') {
+                textArea.value += ' ';
+            }
+        }
+
+        // Add period
+        function addPeriod() {
+            if (textArea.value.length > 0 && textArea.value[textArea.value.length - 1] !== '.') {
+                textArea.value += '.';
+                displayWordButtons('starters');
+            }
+        }
+
+        // Event listeners
+        readButton.addEventListener('click', readText);
+        clearButton.addEventListener('click', clearText);
+        backspaceButton.addEventListener('click', backspace);
+        spaceButton.addEventListener('click', addSpace);
+        periodButton.addEventListener('click', addPeriod);
+
+        // Initialize
+        displayWordButtons('starters');
+    </script>
+</body>
+</html>
