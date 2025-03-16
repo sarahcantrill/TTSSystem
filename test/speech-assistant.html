@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Assistant</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .text-area {
+            width: 100%;
+            min-height: 150px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            padding: 15px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .control-btn {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .control-btn:hover {
+            background-color: #2980b9;
+        }
+        .word-btn {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            margin: 5px;
+        }
+        .word-btn:hover {
+            background-color: #bdc3c7;
+        }
+        .tab {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .tab-btn {
+            background-color: #f1f1f1;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+        .tab-content.active {
+            display: flex;
+        }
+        .hint-section {
+            margin-top: 20px;
+        }
+        .hint-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .hint-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 2s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .status-message {
+            text-align: center;
+            color: #3498db;
+            margin: 10px 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Speech Assistant</h1>
+        
+        <div class="text-area" id="textOutput" contenteditable="true"></div>
+        
+        <div class="controls">
+            <button id="speakBtn" class="control-btn">Speak</button>
+            <button id="clearBtn" class="control-btn">Clear</button>
+            <button id="backspaceBtn" class="control-btn">Backspace</button>
+            <button id="spaceBtn" class="control-btn">Space</button>
+            <button id="periodBtn" class="control-btn">.</button>
+            <button id="questionBtn" class="control-btn">?</button>
+            <button id="exclamationBtn" class="control-btn">!</button>
+        </div>
+        
+        <div class="tab">
+            <button class="tab-btn active" data-tab="starters">Sentence Starters</button>
+            <button class="tab-btn" data-tab="questions">Questions</button>
+            <button class="tab-btn" data-tab="responses">Responses</button>
+            <button class="tab-btn" data-tab="subjects">Subjects</button>
+            <button class="tab-btn" data-tab="verbs">Verbs</button>
+            <button class="tab-btn" data-tab="common">Common Words</button>
+        </div>
+        
+        <div id="starters" class="tab-content active">
+            <button class="word-btn">I</button>
+            <button class="word-btn">We</button>
+            <button class="word-btn">The</button>
+            <button class="word-btn">My</button>
+            <button class="word-btn">Please</button>
+            <button class="word-btn">Today</button>
+            <button class="word-btn">Yesterday</button>
+            <button class="word-btn">Tomorrow</button>
+            <button class="word-btn">Could</button>
+            <button class="word-btn">Would</button>
+            <button class="word-btn">Thank you</button>
+        </div>
+        
+        <div id="questions" class="tab-content">
+            <button class="word-btn">What</button>
+            <button class="word-btn">Where</button>
+            <button class="word-btn">When</button>
+            <button class="word-btn">Why</button>
+            <button class="word-btn">How</button>
+            <button class="word-btn">Can I</button>
+            <button class="word-btn">Could you</button>
+            <button class="word-btn">Do you</button>
+            <button class="word-btn">Is it</button>
+            <button class="word-btn">Will you</button>
+        </div>
+        
+        <div id="responses" class="tab-content">
+            <button class="word-btn">Yes</button>
+            <button class="word-btn">No</button>
+            <button class="word-btn">Maybe</button>
+            <button class="word-btn">I agree</button>
+            <button class="word-btn">I disagree</button>
+            <button class="word-btn">I understand</button>
+            <button class="word-btn">I don't understand</button>
+            <button class="word-btn">I need help</button>
+            <button class="word-btn">Good idea</button>
+            <button class="word-btn">Let me think</button>
+        </div>
+        
+        <div id="subjects" class="tab-content">
+            <button class="word-btn">I</button>
+            <button class="word-btn">you</button>
+            <button class="word-btn">we</button>
+            <button class="word-btn">they</button>
+            <button class="word-btn">he</button>
+            <button class="word-btn">she</button>
+            <button class="word-btn">it</button>
+            <button class="word-btn">the teacher</button>
+            <button class="word-btn">the class</button>
+            <button class="word-btn">the book</button>
+            <button class="word-btn">my assignment</button>
+        </div>
+        
+        <div id="verbs" class="tab-content">
+            <button class="word-btn">am</button>
+            <button class="word-btn">is</button>
+            <button class="word-btn">are</button>
+            <button class="word-btn">was</button>
+            <button class="word-btn">were</button>
+            <button class="word-btn">have</button>
+            <button class="word-btn">need</button>
+            <button class="word-btn">want</button>
+            <button class="word-btn">like</button>
+            <button class="word-btn">think</button>
+            <button class="word-btn">know</button>
+            <button class="word-btn">understand</button>
+            <button class="word-btn">finished</button>
+        </div>
+        
+        <div id="common" class="tab-content">
+            <button class="word-btn">and</button>
+            <button class="word-btn">or</button>
+            <button class="word-btn">but</button>
+            <button class="word-btn">because</button>
+            <button class="word-btn">with</button>
+            <button class="word-btn">without</button>
+            <button class="word-btn">to</button>
+            <button class="word-btn">from</button>
+            <button class="word-btn">in</button>
+            <button class="word-btn">on</button>
+            <button class="word-btn">at</button>
+            <button class="word-btn">by</button>
+            <button class="word-btn">for</button>
+        </div>
+        
+        <div class="hint-section">
+            <div class="hint-title">Next Word Suggestions: <span id="modelStatus"></span></div>
+            <div class="hint-buttons" id="nextWordSuggestions"></div>
+        </div>
+        
+        <div class="status-message" id="statusMessage">Loading TensorFlow model...</div>
+    </div>
+
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/4.2.0/tf.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textOutput = document.getElementById('textOutput');
+            const speakBtn = document.getElementById('speakBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const backspaceBtn = document.getElementById('backspaceBtn');
+            const spaceBtn = document.getElementById('spaceBtn');
+            const periodBtn = document.getElementById('periodBtn');
+            const questionBtn = document.getElementById('questionBtn');
+            const exclamationBtn = document.getElementById('exclamationBtn');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const wordButtons = document.querySelectorAll('.word-btn');
+            const nextWordSuggestions = document.getElementById('nextWordSuggestions');
+            const statusMessage = document.getElementById('statusMessage');
+            const modelStatus = document.getElementById('modelStatus');
+            
+            // Category-specific word suggestions
+            const categoryWords = {
+                'starters': [
+                    'I', 'We', 'The', 'My', 'Please', 'Today', 'Yesterday', 'Tomorrow', 
+                    'Could', 'Would', 'Thank you', 'Hello', 'Good morning', 'During', 'Since'
+                ],
+                'questions': [
+                    'What', 'Where', 'When', 'Why', 'How', 'Can I', 'Could you', 'Do you', 
+                    'Is it', 'Will you', 'Are there', 'Should I', 'Would you', 'Have you'
+                ],
+                'responses': [
+                    'Yes', 'No', 'Maybe', 'I agree', 'I disagree', 'I understand', 
+                    'I don\'t understand', 'I need help', 'Good idea', 'Let me think',
+                    'Absolutely', 'Not really', 'Definitely', 'Thank you', 'I appreciate'
+                ],
+                'subjects': [
+                    'I', 'you', 'we', 'they', 'he', 'she', 'it', 'the teacher', 'the class', 
+                    'the book', 'my assignment', 'the doctor', 'my friend', 'the parent',
+                    'the team', 'the group', 'everyone', 'somebody', 'nobody'
+                ],
+                'verbs': [
+                    'am', 'is', 'are', 'was', 'were', 'have', 'need', 'want', 'like', 'think',
+                    'know', 'understand', 'finished', 'helped', 'started', 'gave', 'took',
+                    'said', 'asked', 'answered', 'explained', 'showed', 'tried', 'feel'
+                ],
+                'common': [
+                    'and', 'or', 'but', 'because', 'with', 'without', 'to', 'from', 'in',
+                    'on', 'at', 'by', 'for', 'about', 'through', 'during', 'after', 'before',
+                    'since', 'until', 'while', 'if', 'then', 'than', 'as', 'so'
+                ]
+            };
+            
+            // Enhanced language model with more contextual suggestions
+            const languageModel = {
+                'I': ['am', 'have', 'need', 'want', 'think', 'would', 'could', 'will', 'feel', 'don\'t'],
+                'We': ['are', 'have', 'need', 'want', 'should', 'could', 'will', 'must', 'don\'t', 'can'],
+                'The': ['teacher', 'class', 'book', 'assignment', 'question', 'answer', 'test', 'person', 'doctor'],
+                'My': ['name', 'question', 'answer', 'book', 'pencil', 'notebook', 'desk', 'teacher', 'friend'],
+                'Please': ['help', 'explain', 'show', 'tell', 'give', 'let', 'assist', 'understand', 'wait'],
+                'What': ['is', 'are', 'was', 'were', 'will', 'should', 'can', 'do', 'time', 'happened'],
+                'Where': ['is', 'are', 'was', 'were', 'will', 'should', 'can', 'did', 'should', 'could'],
+                'When': ['is', 'are', 'was', 'were', 'will', 'should', 'can', 'did', 'does', 'should'],
+                'Why': ['is', 'are', 'was', 'were', 'did', 'do', 'can\'t', 'should', 'doesn\'t', 'won\'t'],
+                'How': ['do', 'does', 'did', 'is', 'are', 'can', 'should', 'many', 'much', 'long', 'often'],
+                'need': ['to', 'help', 'a', 'more', 'some', 'time', 'assistance', 'medication', 'support'],
+                'want': ['to', 'a', 'some', 'more', 'help', 'information', 'an', 'the', 'something'],
+                'am': ['not', 'going', 'trying', 'feeling', 'thinking', 'working', 'here', 'ready', 'tired'],
+            };
+
+            const words = {
+                "need": ["to", "help", "a", "more", "some", "time", "assistance", "medication", "support"],
+                "want": ["to", "a", "some", "more", "help", "information", "an", "the", "something"],
+                "am": ["not", "going", "trying", "feeling", "thinking", "working", "here", "ready", "tired"],
+                "is": ["not", "the", "a", "my", "your", "this", "that", "very", "too", "going"],
+                "are": ["not", "the", "my", "your", "these", "those", "we", "you", "they", "going"],
+                "have": ["a", "the", "my", "your", "this", "that", "to", "not", "been", "some"],
+                "think": ["about", "that", "the", "it", "I", "we", "you", "they", "he", "she"],
+                "you": ["are", "have", "can", "should", "would", "will", "need", "want", "know", "think"],
+                "they": ["are", "have", "can", "should", "would", "will", "need", "want", "know", "think"],
+                "can": ["you", "I", "we", "they", "he", "she", "it", "help", "do", "see"],
+                "do": ["you", "I", "we", "they", "not", "this", "that", "it", "now", "later"],
+                "to": ["be", "have", "do", "get", "go", "see", "help", "make", "take", "use"],
+                "with": ["the", "a", "my", "your", "this", "that", "these", "those", "me", "you"],
+                "for": ["the", "a", "my", "your", "this", "that", "these", "those", "me", "you"]
+            };
+
+            
+            // Speech synthesis setup
+            const synth = window.speechSynthesis;
+            
+            // Variables for TensorFlow model
+            let wordIndex = {};
+            let reverseWordIndex = {};
+            let model = null;
+            let tfLoaded = false;
+            
+            // Initialize TensorFlow model
+            async function initTensorFlow() {
+                try {
+                    // In a real application, you would load a pre-trained model
+                    // Here we'll create a simple model for demonstration
+                    
+                    // Create a vocabulary from our language model and category words
+                    const vocabulary = new Set();
+                    
+                    // Add words from language model
+                    Object.keys(languageModel).forEach(key => {
+                        vocabulary.add(key.toLowerCase());
+                        languageModel[key].forEach(word => vocabulary.add(word.toLowerCase()));
+                    });
+                    
+                    // Add words from category words
+                    Object.keys(categoryWords).forEach(category => {
+                        categoryWords[category].forEach(word => {
+                            if (word.includes(' ')) {
+                                // Handle phrases by adding individual words
+                                word.split(' ').forEach(w => vocabulary.add(w.toLowerCase()));
+                            } else {
+                                vocabulary.add(word.toLowerCase());
+                            }
+                        });
+                    });
+                    
+                    // Create word indices
+                    const vocabArray = Array.from(vocabulary);
+                    vocabArray.forEach((word, i) => {
+                        wordIndex[word] = i + 1; // Reserve 0 for padding
+                        reverseWordIndex[i + 1] = word;
+                    });
+                    
+                    // Create a simple model that takes in a sequence of words and predicts the next word
+                    model = tf.sequential();
+                    
+                    model.add(tf.layers.embedding({
+                        inputDim: Object.keys(wordIndex).length + 1,
+                        outputDim: 16,
+                        inputLength: 3 // Consider 3 words of context
+                    }));
+                    
+                    model.add(tf.layers.flatten());
+                    model.add(tf.layers.dense({ units: 24, activation: 'relu' }));
+                    model.add(tf.layers.dense({ units: Object.keys(wordIndex).length + 1, activation: 'softmax' }));
+                    
+                    model.compile({
+                        optimizer: 'adam',
+                        loss: 'sparseCategoricalCrossentropy',
+                        metrics: ['accuracy']
+                    });
+                    
+                    // In a real application, you would train this model on a large corpus
+                    // For this demo, we'll just use it as-is with our predefined rules
+                    
+                    // Update status
+                    statusMessage.textContent = "TensorFlow model initialized successfully!";
+                    modelStatus.innerHTML = '<span style="color: green">✓</span>';
+                    tfLoaded = true;
+                    
+                    // Hide status message after 3 seconds
+                    setTimeout(() => {
+                        statusMessage.style.display = 'none';
+                    }, 3000);
+                    
+                } catch (error) {
+                    console.error("Error initializing TensorFlow:", error);
+                    statusMessage.textContent = "Using fallback predictions (TensorFlow unavailable)";
+                    modelStatus.innerHTML = '<span style="color: orange">⚠</span>';
+                    
+                    // Hide status message after 3 seconds
+                    setTimeout(() => {
+                        statusMessage.style.display = 'none';
+                    }, 3000);
+                }
+            }
+            
+            // Initialize TensorFlow
+            initTensorFlow();
+            
+            // Function to predict next words using TensorFlow and rules
+            async function predictNextWords(context) {
+                // Get last 1-3 words
+                const words = context.toLowerCase().trim().split(/\s+/);
+                let lastWords = words.slice(-3); // Get up to last 3 words
+                
+                // Get active tab
+                const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
+                
+                // Combine TF predictions with rule-based suggestions
+                let suggestions = [];
+                
+                // First check our hard-coded language model for simple rules
+                const lastWord = words[words.length - 1].replace(/[.,!?;:'"]/g, '');
+                if (languageModel[lastWord]) {
+                    suggestions = [...languageModel[lastWord]];
+                }
+                
+                // Add category-specific suggestions if we don't have enough
+                if (suggestions.length < 5) {
+                    suggestions = [...suggestions, ...categoryWords[activeTab].slice(0, 5)];
+                }
+                
+                // If TensorFlow is available, use it to enhance predictions
+                if (tfLoaded && model) {
+                    try {
+                        // Prepare input sequence
+                        const sequence = [];
+                        for (let i = 0; i < 3; i++) {
+                            if (i < lastWords.length) {
+                                const word = lastWords[i].replace(/[.,!?;:'"]/g, '');
+                                sequence.push(wordIndex[word] || 0);
+                            } else {
+                                sequence.push(0); // Padding
+                            }
+                        }
+                        
+                        // Make prediction
+                        const input = tf.tensor2d([sequence]);
+                        const prediction = model.predict(input);
+                        
+                        // Get top 5 predictions
+                        const values = await prediction.data();
+                        const indices = Array.from(values).map((value, index) => ({ value, index }))
+                            .sort((a, b) => b.value - a.value)
+                            .slice(0, 5)
+                            .map(item => item.index);
+                        
+                        // Add TF predictions to suggestions
+                        indices.forEach(index => {
+                            if (reverseWordIndex[index]) {
+                                if (!suggestions.includes(reverseWordIndex[index])) {
+                                    suggestions.push(reverseWordIndex[index]);
+                                }
+                            }
+                        });
+                        
+                        input.dispose();
+                        prediction.dispose();
+                    } catch (error) {
+                        console.error("Error making prediction:", error);
+                    }
+                }
+                
+                // Add default suggestions if we still don't have enough
+                if (suggestions.length < 5) {
+                    const defaultSuggestions = ['the', 'a', 'is', 'are', 'was', 'were', 'have', 'has', 'to', 'and', 'but'];
+                    suggestions = [...suggestions, ...defaultSuggestions];
+                }
+                
+                // Remove duplicates and limit to 8 suggestions
+                return [...new Set(suggestions)].slice(0, 8);
+            }
+            
+            // Text-to-speech function
+            function speak(text) {
+                if (synth.speaking) {
+                    synth.cancel();
+                }
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9; // Slightly slower than default
+                utterance.pitch = 1;
+                synth.speak(utterance);
+            }
+            
+            // Generate word suggestions based on context
+            async function generateSuggestions() {
+                // Clear current suggestions
+                nextWordSuggestions.innerHTML = '';
+                
+                // Get the current text
+                const currentText = textOutput.textContent.trim();
+                
+                if (currentText === '') {
+                    // For empty text, suggest sentence starters
+                    const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
+                    categoryWords[activeTab].slice(0, 8).forEach(word => {
+                        const button = document.createElement('button');
+                        button.className = 'word-btn';
+                        button.textContent = word;
+                        button.addEventListener('click', function() {
+                            addWord(word);
+                        });
+                        nextWordSuggestions.appendChild(button);
+                    });
+                    return;
+                }
+                
+                // Get suggestions from predictors
+                const suggestions = await predictNextWords(currentText);
+                
+                // Add suggestion buttons
+                suggestions.forEach(word => {
+                    const button = document.createElement('button');
+                    button.className = 'word-btn';
+                    button.textContent = word;
+                    button.addEventListener('click', function() {
+                        addWord(word);
+                    });
+                    nextWordSuggestions.appendChild(button);
+                });
+            }
+            
+            // Function to add a word to the text area
+            function addWord(word) {
+                const currentText = textOutput.textContent;
+                
+                // Check if we need to add a space before the word
+                if (currentText !== '' && !currentText.endsWith(' ') && !currentText.endsWith('.') && 
+                    !currentText.endsWith('!') && !currentText.endsWith('?')) {
+                    textOutput.textContent += ' ';
+                }
+                
+                // If after punctuation, capitalize the first letter
+                if (currentText === '' || currentText.endsWith('.') || 
+                    currentText.endsWith('!') || currentText.endsWith('?')) {
+                    word = word.charAt(0).toUpperCase() + word.slice(1);
+                }
+                
+                // Add the word to the text area
+                textOutput.textContent += word;
+                
+                // Generate new suggestions
+                generateSuggestions();
+            }
+            
+            // Event listeners for control buttons
+            speakBtn.addEventListener('click', function() {
+                speak(textOutput.textContent);
+            });
+            
+            clearBtn.addEventListener('click', function() {
+                textOutput.textContent = '';
+                generateSuggestions();
+            });
+            
+            backspaceBtn.addEventListener('click', function() {
+                const currentText = textOutput.textContent;
+                if (currentText.length > 0) {
+                    // Remove the last character
+                    textOutput.textContent = currentText.slice(0, -1);
+                    generateSuggestions();
+                }
+            });
+            
+            spaceBtn.addEventListener('click', function() {
+                textOutput.textContent += ' ';
+                generateSuggestions();
+            });
+            
+            periodBtn.addEventListener('click', function() {
+                textOutput.textContent += '.';
+                generateSuggestions();
+            });
+            
+            questionBtn.addEventListener('click', function() {
+                textOutput.textContent += '?';
+                generateSuggestions();
+            });
+            
+            exclamationBtn.addEventListener('click', function() {
+                textOutput.textContent += '!';
+                generateSuggestions();
+            });
+            
+            // Tab switching functionality
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to current button
+                    this.classList.add('active');
+                    
+                    // Show the corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // Update suggestions based on new tab
+                    generateSuggestions();
+                });
+            });
+            
+            // Word button functionality
+            wordButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    addWord(this.textContent);
+                });
+            });
+            
+            // Handle text input directly in the text area
+            textOutput.addEventListener('input', function() {
+                generateSuggestions();
+            });
+            
+            // Initialize suggestions
+            generateSuggestions();
+        });
+    </script>
+</body>
+</html>
