@@ -49,6 +49,52 @@ document.addEventListener("DOMContentLoaded", () => {
     //all of the words for the model
     const allWords = Object.values(categoryWords).flat();
 
+    //itialising tensor flow
+    async function initTensorFLow() {
+        try {
+            allWords.forEach((word, index) => { //create word indices
+                wordIndex[word] = index + 1; //potetially make lower case later
+                reverseWordIndex[index + 1] = word; //potetially make lower case later
+            });
+            
+            model = tf.sequential(); //imple sequential model
+
+            model.add(tf.layers.embedding({ //layers
+                inputDim: Object.keys(wordIndex).length + 1, //input dimension
+                outputDim: 16, //output dimension
+                inputLength: 3
+            }));
+
+            model.add(tf.layers.flatten());
+
+            model.add(tf.layers.dense({
+                units: 32,
+                activation: 'relu'
+            }));
+
+            model.add(tf.layers.dense({
+                units: Object.keys(wordIndex).length + 1,
+                activation: 'softmax'
+            }));
+
+            model.compile({ //compile model
+                optimizer: 'adam',
+                loss: 'sparseCategoricalCrossentropy',
+                metrics: ['accuracy']
+            });
+
+            await trainModel();//train model with basic patterns
+
+            tfLoaded = true;
+            statusMessage.textContent = "TensorFlow model loaded successfully!";
+            setTimeout(() => {
+                statusMessage.textContent = "";
+            }, 3000);
+        } catch (error) {
+            console.error("Error initializing TensorFlow:", error);
+            statusMessage.textContent = "Error loading TensorFlow model. Using fallback suggestions.";
+        }
+    }
 
     //words clicked means they are added to the container
     wordboxes.forEach(button => {
