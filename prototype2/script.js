@@ -1,6 +1,3 @@
-//alert("script.js loaded");
-import { getSuggestions } from "/src/models/ngramModel.js";
-
 document.addEventListener("DOMContentLoaded", () => {
     const wordboxes = document.querySelectorAll(".word-box");
     const textOutput = document.getElementById("text-output");
