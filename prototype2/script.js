@@ -46,6 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
         'How': ['is', 'are', 'do', 'does', 'did', 'can', 'should', 'would', 'will', 'much']
     };
 
+    //all of the words for the model
+    const allWords = Object.values(categoryWords).flat();
+
+
     //words clicked means they are added to the container
     wordboxes.forEach(button => {
         button.addEventListener("click", function () {
