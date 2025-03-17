@@ -3,9 +3,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const textOutput = document.getElementById("text-output");
     const resetButton = document.querySelector(".reset-btn");
     const undoButton = document.querySelector(".undo-btn");
-    const predictionsButton = document.querySelector(".button-container");
+    const nextWordSuggestions = document.getElementById("nextWordSuggestions");
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
+
+    // if (!textOutput || !resetButton || !undoButton || !nextWordSuggestions || !tabButtons.length || !tabContents.length) {
+    //     console.error("One or more elements are missing from the DOM.");
+    //     return;
+    // }
+
+    // console.log("All elements selected correctly.");
 
     //undo functionality
     let textHistory = [''];
@@ -178,6 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     } catch (error) {
                         console.error("error making prediction:", error);
                     }
+
+                    textOutput.addEventListener("input", updateSuggestions);
+
             }
         }
 
@@ -239,16 +249,18 @@ document.addEventListener("DOMContentLoaded", () => {
             textOutput.value = newText;
             updateWordSuggestions();
         }
+
+
         
 
 
     //words clicked means they are added to the container MIGHT HAVE TO REMOVED
     wordboxes.forEach(button => {
-        button.addEventListener("click", function () {
-           // addWord(this.text)
-           textOutput.value += this.textContent + " ";
+        button.addEventListener("click", () => {
+            addWordToOutput(button.textContent);
         });
     });
+    
 
     //reset button
     resetButton.addEventListener("click", () => {
@@ -262,18 +274,66 @@ document.addEventListener("DOMContentLoaded", () => {
         textOutput.value = wordLength.join(" ") + " ";
     });
 
+    // function undoAction() {
+    //     if (currentHistoryIndex > 0) {
+    //         currentHistoryIndex--;
+    //         textOutput.value = textHistory[currentHistoryIndex];
+    //         updateWordSuggestions();
+    //     }
+    // }
+
+    function addSpace() { //adding space after word
+        const currentText = textOutput.value;
+        if (currentText.length > 0 && !currentText.endsWith(' ')) {
+            updateText(currentText + ' ');
+        }
+    }
+
     //tab switching 
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
-            //get rid of active class from all buttons
-            tabButtons.forEach(btn => btn.classList.remove('active'));
+            
+            tabButtons.forEach(btn => btn.classList.remove('active')); //get rid of active class from all buttons
             tabContents.forEach(content => content.classList.remove('active'));
-            //add active class to clicked button and corresponding content
-            button.classList.add('active');
+    
+            button.classList.add('active');//add active class to clicked button and corresponding content
             const tabId = button.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
         });
     });
+
+    // initialsie
+    function init() {
+        initTensorFlow();
+
+        wordButtons.forEach(button => { //enetnt listeners for word buttons
+            button.addEventListener('click', () => {
+                addWordToOutput(button.textContent);
+            });
+        });
+        
+        resetButton.addEventListener('click', resetText);
+        undoButton.addEventListener('click', undoAction);
+        speakButton.addEventListener('click', speakText);
+        spaceButton.addEventListener('click', addSpace);
+        periodButton.addEventListener('click', () => addPunctuation('.'));
+        questionButton.addEventListener('click', () => addPunctuation('?'));
+        exclamationButton.addEventListener('click', () => addPunctuation('!'));
+        
+        tabButtons.forEach(button => { //event listeners for tab buttons
+            button.addEventListener('click', () => {
+                switchTab(button.dataset.tab);
+            });
+        });
+        
+        textOutput.addEventListener('input', updateWordSuggestions);  //event listener for text changes
+        
+        // Initial suggestions
+        updateWordSuggestions();
+    }
+
+    init();
+
 
     //useless js
     //event listener for input fiels to generate suggestions
@@ -302,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //     generateButtons(textOutput.value);
      }
 
-    // generateButtons('');
+    // generateButtons(''); 
 
 });
 
