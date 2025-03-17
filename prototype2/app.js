@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const predictions = await predictNextWords(text);
         
         if (predictions && predictions.length > 0) {
-            addSuggestionButtons(predictions);
+            addSuggestionButtons(predictions.slice(0, 10));
         } else {
             // Fallback to rule-based predictions
             const words = text.toLowerCase().split(/\s+/);
@@ -242,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 addSuggestionButtons(['and', 'the', 'to', 'with', 'for']);
             } else {
                 // Empty or just spaces
-                addSuggestionButtons(categoryWords.starters.slice(0, 5));
+                addSuggestionButtons(categoryWords.starters.slice(0, 10));
             }
         }
     }
