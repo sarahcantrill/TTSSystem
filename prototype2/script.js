@@ -213,10 +213,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 nextWordSuggestions.appendChild(button);
             });
         }
+
+        function addWordToOutput(word) { //add words to text output 
+            const currentText = textOutput.value;
+            let newText;
+
+            if (currentText.length === 0 || currentText.endsWith(' ') || //check if space is needed before the new word
+                currentText.endsWith('.') || currentText.endsWith('?') || 
+                currentText.endsWith('!')) {
+                newText = currentText + word;
+            } else {
+                newText = currentText + ' ' + word;
+            }
+            
+            updateText(newText);
+        }
+
+        
         
 
 
-    //words clicked means they are added to the container
+    //words clicked means they are added to the container MIGHT HAVE TO REMOVED
     wordboxes.forEach(button => {
         button.addEventListener("click", function () {
            // addWord(this.text)
