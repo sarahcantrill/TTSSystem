@@ -96,6 +96,126 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    async function trainModel() { //train model with basic patterns
+        const sequences = []; //create trainging data from langauge model
+        const nextWords = [];
+
+        for (const [word, predictions] of Object.entries(languageModel)) {
+            const wordIdx = wordIndex[word.toLowerCase()] || 0;
+            
+            predictions.forEach(nextWord => {
+                const nextWordIdx = wordIndex[nextWord.toLowerCase()] || 0;
+                if (nextWordIdx > 0) {
+                    sequences.push([0, 0, wordIdx]); //sewquence of 3 words w padding 
+                    nextWords.push(nextWordIdx);
+                }
+            });
+        }
+
+        const xs = tf.tensor2d(sequences); //convert to tensors
+        const ys = tf.tensor1d(nextWords, 'int32');
+
+        await model.fit(xs, ys, { //train model
+            epochs: 50,
+            batchSize: 8,
+            shuffle: true,
+            verbose: 0
+        });
+
+        xs.dispose(); //clean tensors
+        ys.dispose();
+
+        function getWordSuggestions() { //suggestion based on input
+            const text = textOutput.value.trim().split(' ');
+            
+            if (!text) { //if empty suggest starters
+                return categoryWords.starters.slice(0, 5);
+            }
+
+                const words = text.split(/\s+/); //get last word
+                const lastWord = words[words.length - 1].toLowerCase();
+                const lastCompleteWord = words.length > 1 ? words[words.length - 2].toLowerCase() : '';
+                
+                if (lastWord && languageModel[lastWord]) { //if there is a specific prediciton from language model
+                    return languageModel[lastWord].slice(0, 5);
+                }
+
+                if (lastCompleteWord && languageModel[lastCompleteWord]) { // if there is a specific predicition for the last complete word
+                    return languageModel[lastCompleteWord].slice(0, 5);
+                }
+
+                if (tfLoaded && model) { //use tensorflow 
+                    try {
+                        const lastThreeWords = words.slice(-3).map(w => { //get the last 3 words or whatever is available if theres not enough 
+                            return wordIndex[w.toLowerCase()] || 0;
+                        });
+                        
+                        while (lastThreeWords.length < 3) { //ensure three inputs
+                            lastThreeWords.unshift(0);
+                        }
+                        
+                        const input = tf.tensor2d([lastThreeWords]); //make prediction
+                        const prediction = model.predict(input);
+                        const values = prediction.dataSync();
+                        
+                        const indices = Array.from(values) //get top 10 predicitions
+                            .map((value, index) => ({ value, index }))
+                            .sort((a, b) => b.value - a.value)
+                            .slice(0, 10)
+                            .map(item => item.index)
+                            .filter(index => index > 0);//filter padding
+                        
+                        const suggestions = indices.map(index => reverseWordIndex[index]) //convert indices to words 
+                            .filter(word => word) //undefined filtered out
+                         //   .map(word => word.charAt(0).toUpperCase() + word.slice(1)); // Capitalize
+                        
+                        input.dispose(); //clean tensors
+                        prediction.dispose();
+                        
+                        if (suggestions.length > 0) {
+                            return suggestions;
+                        }
+                    } catch (error) {
+                        console.error("error making prediction:", error);
+                    }
+            }
+        }
+
+        async function updateSuggestions() { //next word suggestions updated
+            nextWordSuggestions.innerHTML = '';
+            const text = textOutput.value.trim();
+            const predictions = await predictNextWords(text); //get predcitions from the tensor flow model
+            
+            if (predictions && predictions.length > 0) {
+                addSuggestionButtons(predictions);//use tensor flow predicitions 
+            } else {
+                const words = text.toLowerCase().trim().split(/\s+/); //fallbck to rules based predicitions
+                const lastWord = words[words.length - 1];
+                
+                if (commonFollowUps[lastWord]) { 
+                    addSuggestionButtons(commonFollowUps[lastWord]); //if there are specific follow ups 
+                } else if (words.length > 3) {
+                    addSuggestionButtons(sentenceEndings); //suggest sentence endings if more than 3 words
+                } else {
+                    addSuggestionButtons(['and', 'the', 'to', 'with', 'for']); //default
+                }
+            }
+        }
+
+        function addSuggestionButtons(words) { //add suggestion buttons
+            words.forEach(word => {
+                const button = document.createElement('button');
+                button.textContent = word;
+                button.addEventListener('click', () => {
+                    addWord(word);
+                    showStatus(`Added: "${word}"`);
+                });
+                nextWordSuggestions.appendChild(button);
+            });
+        }
+        
+
+
     //words clicked means they are added to the container
     wordboxes.forEach(button => {
         button.addEventListener("click", function () {
@@ -154,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // function insertWord(word) {
     //     textOutput.value += word + " ";
     //     generateButtons(textOutput.value);
-    // }
+     }
 
     // generateButtons('');
 
