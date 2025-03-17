@@ -229,7 +229,16 @@ document.addEventListener("DOMContentLoaded", () => {
             updateText(newText);
         }
 
-        
+        function updateText(newText) { //managing history
+            if (textHistory[currentHistoryIndex] !== newText) {
+                textHistory = textHistory.slice(0, currentHistoryIndex + 1);
+                textHistory.push(newText);
+                currentHistoryIndex = textHistory.length - 1;
+            }
+            
+            textOutput.value = newText;
+            updateWordSuggestions();
+        }
         
 
 
