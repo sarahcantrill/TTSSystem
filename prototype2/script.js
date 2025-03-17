@@ -7,6 +7,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
 
+    //undo functionality
+    let textHistory = [''];
+    let currentHistoryIndex = 0;
+
+    //tensor flow vars
+    let wordIndex = {};
+    let reverseWordIndex = {};
+    let model = null;
+    let tfLoaded = false;
+    let tf = window.tf; //declare tensorflow var 
+
+    
+
 
     //words clicked means they are added to the container
     wordboxes.forEach(button => {
