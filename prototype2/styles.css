@@ -4,8 +4,8 @@ body {
     padding-left: 15px;;
 }
 
-h1, h2 {
-    color: #2c3e50;
+h1 {
+    text-align: center;
 }
 
 .output-and-buttons {
