@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS System with Word Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        .text-container {
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #text-output {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .output-and-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reverse-btns {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .reset-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .undo-btn {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .speak-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .words-containers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .word-box {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .prediction-btn {
+            background-color: #673AB7;
+            color: white;
+        }
+
+        .more-options-btn {
+            background-color: #2196F3;
+            color: white;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .more-options-container {
+            margin-bottom: 20px;
+        }
+
+        .category-container {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .category-container h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .words-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            button {
+                padding: 10px;
+            }
+            
+            .reverse-btns {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>TTS System with Word Recommendations</h1>
+
+    <section class="text-container">
+        <h2>Your text here:</h2>
+        <section class="output-and-buttons">
+            <textarea id="text-output" placeholder="your words here..."></textarea>
+            <aside class="reverse-btns">
+                <button class="reset-btn">Reset</button>
+                <button class="undo-btn">Undo</button>
+                <button class="speak-btn">Speak</button>
+            </aside>
+        </section>
+    </section>
+
+    <h2>Word Recommendations:</h2>
+    <div class="button-container"></div>
+
+    <h2>Common Words:</h2>
+    <section class="words-containers">
+        <button class="word-box">the</button>
+        <button class="word-box">be</button>
+        <button class="word-box">of</button>
+        <button class="word-box">and</button>
+        <button class="word-box">a</button>
+        <button class="word-box">to</button>
+        <button class="word-box">it</button>
+        <button class="word-box">I</button>
+    </section>
+    
+    <button class="more-options-btn">More Options</button>
+    
+    <div class="more-options-container" style="display: none;">
+        <div class="category-container">
+            <h3>Pronouns</h3>
+            <div class="words-container pronouns-container"></div>
+        </div>
+        <div class="category-container">
+            <h3>Verbs</h3>
+            <div class="words-container verbs-container"></div>
+        </div>
+        <div class="category-container">
+            <h3>Adjectives</h3>
+            <div class="words-container adjectives-container"></div>
+        </div>
+        <div class="category-container">
+            <h3>Prepositions</h3>
+            <div class="words-container prepositions-container"></div>
+        </div>
+    </div>
+    
+    <script>
+        // N-gram model implementation
+        function NGramModel(n) {
+            this.n = n || 2;
+            this.ngrams = {};
+            this.context = {};
+            
+            // Train the model with a corpus of text
+            this.train = function(text) {
+                const sentences = text.toLowerCase().split('\n').map(s => s.trim());
+                sentences.forEach(sentence => {
+                    const words = sentence.split(' ').filter(w => w.length > 0);
+                    if (words.length < this.n) return;
+        
+                    for (let i = 0; i <= words.length - this.n; i++) {
+                        const ngram = words.slice(i, i + this.n).join(' ');
+                        const nextWord = words[i + this.n] || null;
+                        const context = words.slice(i, i + this.n - 1).join(' ') || null;
+        
+                        if (ngram) {
+                            this.ngrams[ngram] = this.ngrams[ngram] || 0;
+                            this.ngrams[ngram]++;
+                        }
+        
+                        if (context) {
+                            this.context[context] = this.context[context] || {};
+                            if (nextWord) {
+                                this.context[context][nextWord] = this.context[context][nextWord] || 0;
+                                this.context[context][nextWord]++;
+                            }
+                        }
+                    }
+                });
+            };
+            
+            // Get next word suggestions based on previous words
+            this.predict = function(input, numPredictions) {
+                numPredictions = numPredictions || 5;
+                const words = input.toLowerCase().split(' ').filter(w => w.length > 0);
+                const context = words.slice(Math.max(0, words.length - this.n + 1)).join(' ');
+        
+                if (!this.context[context] || Object.keys(this.context[context]).length === 0) {
+                    // If no context match, return common words
+                    return ["I", "you", "the", "a", "to", "is", "are", "can", "will", "need", "want", "help", "please"].slice(0, numPredictions);
+                }
+        
+                const predictions = Object.entries(this.context[context])
+                    .sort(function(a, b) { return b[1] - a[1]; })
+                    .slice(0, numPredictions)
+                    .map(function(entry) { return entry[0]; });
+        
+                return predictions;
+            };
+        }
+
+        // Wait for DOM to be fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // DOM elements
+            var wordboxes = document.querySelectorAll(".word-box");
+            var textOutput = document.getElementById("text-output");
+            var resetButton = document.querySelector(".reset-btn");
+            var undoButton = document.querySelector(".undo-btn");
+            var speakButton = document.querySelector(".speak-btn");
+            var predictionsContainer = document.querySelector(".button-container");
+            var moreOptionsBtn = document.querySelector(".more-options-btn");
+            var moreOptionsContainer = document.querySelector(".more-options-container");
+            
+            // Word categories
+            var wordCategories = {
+                pronouns: ["I", "you", "he", "she", "it", "we", "they", "my", "your", "his", "her", "our", "their"],
+                verbs: ["am", "is", "are", "was", "were", "have", "has", "had", "do", "does", "did", "can", "could", "will"],
+                adjectives: ["good", "bad", "big", "small", "hot", "cold", "new", "old", "high", "low", "happy", "sad"],
+                prepositions: ["in", "on", "at", "to", "from", "with", "without", "for", "of", "by", "about", "under"]
+            };
+            
+            // Initialize the N-gram model
+            var ngramModel = new NGramModel(3); // Trigram model
+            
+            // Training corpus - classroom-related sentences
+            var trainingText = `
+                I need help with this problem.
+                Can you explain that again?
+                I don't understand the question.
+                May I go to the bathroom please?
+                I finished my assignment.
+                The answer is incorrect.
+                Can you repeat that?
+                I need more time.
+                When is the test?
+                I forgot my homework.
+                Could you speak slower please?
+                I'm not feeling well today.
+                Can I ask a question?
+                I need a pencil.
+                What page are we on?
+                I can't see the board.
+                Could you help me?
+                I'm ready to present.
+                What's the deadline?
+                I didn't hear the instructions.
+                Can I work with a partner?
+                I need clarification.
+                May I get a drink of water?
+                What should I do next?
+                Can you check my work?
+            `;
+            
+            // Train the model
+            ngramModel.train(trainingText);
+            
+            // History for undo functionality
+            var history = [];
+            
+            // Initialize word category containers
+            for (var category in wordCategories) {
+                var container = document.querySelector("." + category + "-container");
+                
+                wordCategories[category].forEach(function(word) {
+                    var button = document.createElement('button');
+                    button.textContent = word;
+                    button.className = 'word-box';
+                    button.onclick = function() { addWord(word); };
+                    container.appendChild(button);
+                });
+            }
+            
+            // Words clicked means they are added to the container
+            wordboxes.forEach(function(button) {
+                button.addEventListener("click", function() {
+                    addWord(this.textContent);
+                });
+            });
+            
+            // Reset button
+            resetButton.addEventListener("click", function() {
+                history.push(textOutput.value);
+                textOutput.value = "";
+                generatePredictions("");
+            });
+            
+            // Undo button
+            undoButton.addEventListener("click", function() {
+                if (history.length > 0) {
+                    textOutput.value = history.pop();
+                    generatePredictions(textOutput.value);
+                }
+            });
+            
+            // Speak button
+            speakButton.addEventListener("click", function() {
+                if (textOutput.value.trim() === '') return;
+                
+                var speech = new SpeechSynthesisUtterance(textOutput.value);
+                speech.rate = 0.9;
+                speech.pitch = 1;
+                speech.volume = 1;
+                window.speechSynthesis.speak(speech);
+            });
+            
+            // Event listener for input field to generate suggestions
+            textOutput.addEventListener('input', function() {
+                generatePredictions(this.value);
+            });
+            
+            // Toggle more options
+            moreOptionsBtn.addEventListener('click', function() {
+                var isVisible = moreOptionsContainer.style.display === 'block';
+                moreOptionsContainer.style.display = isVisible ? 'none' : 'block';
+                moreOptionsBtn.textContent = isVisible ? 'More Options' : 'Hide Options';
+            });
+            
+            // Function to add a word to the text output
+            function addWord(word) {
+                history.push(textOutput.value);
+                
+                var needsSpace = textOutput.value.length > 0 && 
+                                textOutput.value[textOutput.value.length - 1] !== ' ' &&
+                                !['.', ',', '?', '!'].includes(textOutput.value[textOutput.value.length - 1]);
+                
+                if (needsSpace) {
+                    textOutput.value += ' ';
+                }
+                
+                textOutput.value += word;
+                generatePredictions(textOutput.value);
+            }
+            
+            // Function for word suggestion buttons generation
+            function generatePredictions(input) {
+                predictionsContainer.innerHTML = '';
+                var suggestions = ngramModel.predict(input, 8);
+                
+                suggestions.forEach(function(word) {
+                    var button = document.createElement('button');
+                    button.textContent = word;
+                    button.className = 'prediction-btn';
+                    button.onclick = function() { addWord(word); };
+                    predictionsContainer.appendChild(button);
+                });
+            }
+            
+            // Initialize predictions
+            generatePredictions('');
+        });
+    </script>
+</body>
+</html>
+
