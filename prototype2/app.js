@@ -139,6 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
             shuffle: true,
             verbose: 0
         });
+
+        // model.add(tf.layers.lstm({
+        //     units: 64,
+        //     returnSequences: false,
+        //     inputShape: [3, 16]  // for your embedding output
+        //   }));
     
         // Clean tensors
         xs.dispose();
