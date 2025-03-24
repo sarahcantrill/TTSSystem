@@ -75,7 +75,62 @@ document.addEventListener("DOMContentLoaded", () => {
         'common': ['and', 'or', 'but', 'because', 'with', 'without', 'to', 'from', 'in', 'on', 'at', 'by', 'for']
     };
 
-    // Language model for word predictions
+    const improvedLanguageModel = {
+        // questions
+        'what': ['is', 'are', 'do', 'does', 'did', 'happened', 'time', 'about', 'should', 'can', 'would', 'will'],
+        'where': ['is', 'are', 'did', 'do', 'can', 'should', 'will', 'would', 'has', 'have', 'was', 'were'],
+        'when': ['is', 'are', 'will', 'did', 'do', 'can', 'should', 'would', 'has', 'have', 'was', 'were'],
+        'why': ['is', 'are', 'did', 'do', 'can', 'should', 'would', 'has', 'have', 'was', 'were', 'not'],
+        'how': ['is', 'are', 'did', 'do', 'can', 'should', 'would', 'has', 'have', 'was', 'were', 'many', 'much', 'long', 'often', 'about', 'come'],
+        
+        // pronouns with verbs
+        'I': ['am', 'was', 'have', 'had', 'will', 'would', 'can', 'could', 'should', 'need', 'want', 'feel', 'think', 'know', 'like', 'love', 'hate', 'see', 'hear', 'understand'],
+        'you': ['are', 'were', 'have', 'had', 'will', 'would', 'can', 'could', 'should', 'need', 'want', 'feel', 'think', 'know', 'like', 'love', 'see', 'hear', 'understand', 'help'],
+        'he': ['is', 'was', 'has', 'had', 'will', 'would', 'can', 'could', 'should', 'needs', 'wants', 'feels', 'thinks', 'knows', 'likes', 'loves', 'sees', 'hears', 'understands', 'helps'],
+        'she': ['is', 'was', 'has', 'had', 'will', 'would', 'can', 'could', 'should', 'needs', 'wants', 'feels', 'thinks', 'knows', 'likes', 'loves', 'sees', 'hears', 'understands', 'helps'],
+        'we': ['are', 'were', 'have', 'had', 'will', 'would', 'can', 'could', 'should', 'need', 'want', 'feel', 'think', 'know', 'like', 'love', 'see', 'hear', 'understand', 'help'],
+        'they': ['are', 'were', 'have', 'had', 'will', 'would', 'can', 'could', 'should', 'need', 'want', 'feel', 'think', 'know', 'like', 'love', 'see', 'hear', 'understand', 'help'],
+        
+        // auxilary verbs
+        'can': ['I', 'you', 'we', 'they', 'he', 'she', 'it', 'help', 'see', 'hear', 'go', 'come', 'make', 'take', 'get', 'find', 'tell', 'ask', 'show', 'give'],
+        'could': ['I', 'you', 'we', 'they', 'he', 'she', 'it', 'help', 'see', 'hear', 'go', 'come', 'make', 'take', 'get', 'find', 'tell', 'ask', 'show', 'give'],
+        'would': ['I', 'you', 'we', 'they', 'he', 'she', 'it', 'like', 'love', 'prefer', 'rather', 'need', 'want', 'help', 'suggest', 'recommend', 'advise'],
+        'should': ['I', 'you', 'we', 'they', 'he', 'she', 'it', 'go', 'come', 'make', 'take', 'get', 'find', 'tell', 'ask', 'show', 'give', 'help', 'see', 'hear'],
+        
+        // common verbs with objects
+        'need': ['to', 'a', 'some', 'help', 'assistance', 'support', 'information', 'time', 'water', 'food', 'medicine', 'rest', 'break', 'bathroom', 'doctor'],
+        'want': ['to', 'a', 'some', 'more', 'less', 'this', 'that', 'it', 'water', 'food', 'help', 'rest', 'break', 'bathroom', 'medicine'],
+        'like': ['to', 'this', 'that', 'it', 'them', 'the', 'a', 'some', 'more', 'less', 'your', 'my', 'his', 'her', 'their'],
+        'have': ['a', 'an', 'the', 'some', 'any', 'many', 'more', 'less', 'this', 'that', 'these', 'those', 'to', 'been', 'my', 'your', 'our'],
+        
+        // articles with nouns
+        'a': ['little', 'lot', 'few', 'bit', 'moment', 'second', 'minute', 'day', 'week', 'month', 'year', 'person', 'doctor', 'nurse', 'problem', 'question'],
+        'the': ['same', 'other', 'next', 'last', 'first', 'second', 'third', 'doctor', 'nurse', 'bathroom', 'medication', 'medicine', 'pain', 'hospital'],
+        
+        // adjectives with nouns
+        'good': ['morning', 'afternoon', 'evening', 'night', 'day', 'time', 'idea', 'choice', 'decision', 'job', 'work', 'question', 'answer'],
+        'bad': ['idea', 'choice', 'decision', 'time', 'day', 'feeling', 'pain', 'reaction', 'situation', 'news'],
+        
+        // prepositions with context
+        'in': ['the', 'my', 'your', 'his', 'her', 'their', 'our', 'a', 'an', 'pain', 'hospital', 'room', 'bed', 'morning', 'afternoon', 'evening', 'night'],
+        'on': ['the', 'my', 'your', 'his', 'her', 'their', 'our', 'a', 'an', 'time', 'schedule', 'it', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        
+        // time-related chains
+        'today': ['I', 'is', 'we', 'at', 'in', 'the', 'morning', 'afternoon', 'evening', 'night', 'will', 'have', 'has', 'feel', 'felt'],
+        'tomorrow': ['I', 'is', 'we', 'will', 'at', 'in', 'the', 'morning', 'afternoon', 'evening', 'night', 'would', 'could', 'should', 'might'],
+        
+        // common AAC-specific chains
+        'help': ['me', 'please', 'with', 'this', 'that', 'now', 'soon', 'I', 'need', 'can', 'could', 'you', 'someone'],
+        'thank': ['you', 'for', 'your', 'the', 'everyone', 'all', 'so', 'much', 'very'],
+        'please': ['help', 'can', 'could', 'would', 'give', 'take', 'bring', 'find', 'tell', 'show', 'me', 'my'],
+        
+        // ending tokens
+        '.': ['I', 'The', 'This', 'That', 'It', 'We', 'They', 'He', 'She', 'You', 'In', 'On', 'At', 'For', 'With', 'About'],
+        '?': ['I', 'Can', 'Could', 'Would', 'Should', 'Is', 'Are', 'Was', 'Were', 'Do', 'Does', 'Did', 'Have', 'Has', 'Had', 'Why', 'How', 'When', 'Where', 'What'],
+        '!': ['I', 'You', 'We', 'That', 'This', 'It', 'Thank', 'Please', 'Help', 'Yes', 'No', 'Maybe', 'Good', 'Great', 'Wonderful']
+    };
+
+    // language model for word predictions, old kept for backward compatibility 
     const languageModel = {
         'I': ['am', 'have', 'need', 'want', 'think', 'would', 'could', 'will', 'feel', 'don\'t'],
         'We': ['are', 'have', 'need', 'want', 'should', 'could', 'will', 'must', 'don\'t', 'can'],
