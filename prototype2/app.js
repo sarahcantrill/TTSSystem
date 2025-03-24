@@ -437,7 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
         nextWordSuggestions.innerHTML = '';
         const text = textOutput.value.trim();
         
-        // If empty, suggest starter words
+        //if empty, suggest starter words
         if (!text) {
             addSuggestionButtons(categoryWords.starters.slice(0, 5));
             return;
@@ -453,20 +453,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const words = text.toLowerCase().split(/\s+/);
             const lastWord = words[words.length - 1];
             
-            if (languageModel[lastWord]) {
-                // If there are specific follow-ups for the last word
-                addSuggestionButtons(languageModel[lastWord].slice(0, 5));
+            if (improvedLanguageModel[lastWord]) {
+                //specific follow-ups for the last word
+                addSuggestionButtons(improvedLanguageModel[lastWord].slice(0, 10));
+            } else if (languageModel[lastWord]) {
+                //specific follow-ups in the original model
+                addSuggestionButtons(languageModel[lastWord].slice(0, 10));
             } else if (lastWord.length > 0) {
-                // Default common words
-                addSuggestionButtons(['and', 'the', 'to', 'with', 'for']);
+                // default
+                addSuggestionButtons(['and', 'the', 'to', 'with', 'for', 'is', 'a', 'in', 'on', 'at']);
             } else {
-                // Empty or just spaces
+                //just spaces
                 addSuggestionButtons(categoryWords.starters.slice(0, 10));
             }
         }
     }
 
-    // Add suggestion buttons
+    // add suggestion buttons
     function addSuggestionButtons(words) {
         words.forEach(word => {
             const button = document.createElement('button');
