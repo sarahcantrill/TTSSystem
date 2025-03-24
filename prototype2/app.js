@@ -230,14 +230,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const nextWords = [];
     
         // Create training data from language model
-        for (const [word, predictions] of Object.entries(languageModel)) {
+        for (const [word, predictions] of Object.entries(improvedLanguageModel)) {
             const wordIdx = wordIndex[word.toLowerCase()] || 0;
             
             predictions.forEach(nextWord => {
                 const nextWordIdx = wordIndex[nextWord.toLowerCase()] || 0;
                 if (nextWordIdx > 0) {
-                    // Ensure that the sequence length is 3
-                    const sequence = [0, 0, wordIdx]; // We need 3 elements to form a valid sequence
+                    // Ensure that the sequence length is 5
+                    const sequence = [0, 0, 0, 0, wordIdx]; // 5 elements with mostly padding at first
                     sequences.push(sequence); 
                     nextWords.push(nextWordIdx);
                 }
