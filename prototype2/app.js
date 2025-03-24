@@ -309,42 +309,57 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!text || !tfLoaded || !model) return null;
         
         try {
-            const words = text.toLowerCase().trim().split(/\s+/);
+            const words = text.toLowerCase().trim().split(/\s+/).slice(-5);
             
             // Get the last three words or whatever is available
-            const lastThreeWords = words.slice(-3).map(w => {
-                return wordIndex[w.toLowerCase()] || 0;
-            });
-            
-            while (lastThreeWords.length < 3) {
-                lastThreeWords.unshift(0);
+            // const lastThreeWords = words.slice(-3).map(w => {
+            //     return wordIndex[w.toLowerCase()] || 0;
+            // });
+            const wordIndices = words.map(w => wordIndex[w.toLowerCase()] || 0);
+
+            //ensure 5 tokens 
+            while (wordIndices.length < 5) {
+                wordIndices.unshift(0);
             }
             
             // Create the tensor input with proper shape
-            const input = tf.tensor2d([lastThreeWords], [1, 3], 'float32'); 
-            const prediction = model.predict(input);
+            // const input = tf.tensor2d([lastThreeWords], [1, 3], 'float32'); 
+            // const prediction = model.predict(input);
+            // const values = prediction.dataSync();
+
+            //take last 5 if too long 
+            const inputIndices = wordIndices.slice(-5);
+            // Create tensor
+            const inputTensor = tf.tensor2d([inputIndices], [1, 5], 'float32');
+            // Get prediction
+            const prediction = model.predict(inputTensor);
             const values = prediction.dataSync();
             
             // Get top 5 predictions
             const indices = Array.from(values)
                 .map((value, index) => ({ value, index }))
                 .sort((a, b) => b.value - a.value)
-                .slice(0, 5)
+                .slice(0, 15)
                 .map(item => item.index)
-                .filter(index => index > 0); // Filter padding
+                .filter(index => index > 0); 
             
-            // Convert indices to words
+            // indices to words
             const suggestions = indices.map(index => reverseWordIndex[index])
-                .filter(word => word); // Filter undefined
+                .filter(word => word);
             
             // Clean tensors
             input.dispose();
             prediction.dispose();
+
+            //if there is valid suggestions, suggest them 
+            if (suggestions.length > 0) {
+                return suggestions;
+            }
             
-            return suggestions;
+            return getFallbackSuggestions(text);
         } catch (error) {
             console.error("Error making prediction:", error);
-            return null;
+            return getFallbackSuggestions(text);
         }
     }
 
