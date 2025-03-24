@@ -363,6 +363,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    //better fallback suggestions
+    function getFallbackSuggestions(text) {
+        if (!text || text.trim() === '') {
+            return categoryWords.starters.slice(0, 10);
+        }
+        
+        const words = text.toLowerCase().trim().split(/\s+/);
+        const lastWord = words[words.length - 1];
+        
+        // try improved language model 
+        if (improvedLanguageModel[lastWord]) {
+            return improvedLanguageModel[lastWord].slice(0, 10);
+        }
+        
+        // try original language model
+        if (languageModel[lastWord]) {
+            return languageModel[lastWord].slice(0, 10);
+        }
+        
+        //last 2 words pattern
+        if (words.length >= 2) {
+            const lastTwoWords = words.slice(-2).join(' ');
+            const lastWordPairs = {
+                'I am': ['feeling', 'going', 'trying', 'looking', 'thinking', 'working', 'ready', 'not', 'here', 'tired'],
+                'I need': ['help', 'to', 'a', 'some', 'more', 'information', 'assistance', 'water', 'food', 'medicine'],
+                'I want': ['to', 'a', 'some', 'more', 'help', 'food', 'water', 'rest', 'something', 'it'],
+                'thank you': ['for', 'so', 'very', 'much', '.', '!', 'kindly', 'again', 'doctor', 'nurse'],
+                'can you': ['help', 'please', 'get', 'bring', 'find', 'tell', 'show', 'explain', 'repeat', 'do'],
+                'could you': ['please', 'help', 'get', 'bring', 'find', 'tell', 'show', 'explain', 'repeat', 'do']
+            };
+            
+            if (lastWordPairs[lastTwoWords]) {
+                return lastWordPairs[lastTwoWords];
+            }
+        }
+        
+        // punctuation-based suggestions
+        const lastChar = text.trim().slice(-1);
+        if (lastChar === '.' || lastChar === '!' || lastChar === '?') {
+            return ['I', 'You', 'We', 'The', 'This', 'That', 'It', 'Today', 'Yesterday', 'Tomorrow'];
+        }
+        
+        // default common words 
+        return ['the', 'and', 'to', 'a', 'in', 'is', 'it', 'I', 'that', 'was', 'for', 'on', 'with'];
+    }
+
     // Function to add word to text output
     function addWordToOutput(word) {
         const currentText = textOutput.value;
