@@ -149,35 +149,58 @@ document.addEventListener("DOMContentLoaded", () => {
         'How': ['is', 'are', 'do', 'does', 'did', 'can', 'should', 'would', 'will', 'much']
     };
 
-    // All words for the model
-    const allWords = Object.values(categoryWords).flat();
+    // All words for the model CHANGE TO INLCUDE THE OTHER LANGUAGE MODEL OR REMOVE 
+    //const allWords = Object.values(categoryWords).flat();
 
-    // Initialize TensorFlow
+    // initialise TensorFlow
     async function initTensorFlow() {
         try {
-            // Create word indices
-            allWords.forEach((word, index) => {
-                wordIndex[word.toLowerCase()] = index + 1;
+            console.log("Initializing improved TensorFlow model...");
+            
+            // create word indices from expanded vocabulary
+            wordIndex = {};
+            reverseWordIndex = {};
+            
+            // add padding token
+            wordIndex['<PAD>'] = 0;
+            reverseWordIndex[0] = '<PAD>';
+            
+            // create word indices
+            commonEnglishWords.forEach((word, index) => {
+                const normalizedWord = word.toLowerCase();
+                wordIndex[normalizedWord] = index + 1;
                 reverseWordIndex[index + 1] = word;
             });
             
-            // Create sequential model
+            // create sequential model
             model = tf.sequential();
 
-            // Add layers
+            // add layers
             model.add(tf.layers.embedding({
                 inputDim: Object.keys(wordIndex).length + 1,
-                outputDim: 16,
-                inputLength: 3
+                outputDim: 64,
+                inputLength: 5  
             }));
 
-            model.add(tf.layers.flatten());
+            //potnetially remove this 
+           // model.add(tf.layers.flatten());
 
-            model.add(tf.layers.dense({
-                units: 32,
+           // LSTM layer for better sequence learning
+                model.add(tf.layers.lstm({
+                units: 128,
+                returnSequences: false
+            }));
+            
+            //  dropout to prevent overfitting
+            model.add(tf.layers.dropout({ rate: 0.2 }));
+
+             // dense hidden layer
+             model.add(tf.layers.dense({
+                units: 256,
                 activation: 'relu'
             }));
-
+            
+            // output layer
             model.add(tf.layers.dense({
                 units: Object.keys(wordIndex).length + 1,
                 activation: 'softmax'
@@ -185,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Compile model
             model.compile({
-                optimizer: 'adam',
+                optimizer: tf.train.adam(0.001),
                 loss: 'sparseCategoricalCrossentropy',
                 metrics: ['accuracy']
             });
@@ -200,8 +223,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Using fallback suggestions.");
         }
     }
-
-   // let xs = tf.tensor([...]); // Example initialization
 
     // Train model with basic patterns
     async function trainModel() {
