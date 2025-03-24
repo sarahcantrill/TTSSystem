@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const categoryWords = {
         'starters': ['I', 'You', 'We', 'They', 'He', 'She', 'It', 'Please', 'Today', 'Could', 'Would'],
-        'questions': ['who', 'what', 'when', 'where', 'why', 'can I', 'could you', 'please', 'do you', 'Could', 'Would', 'is it'],
+        'questions': ['who', 'what', 'when', 'where', 'why', 'can I', 'could you', 'please', 'do you', 'Could', 'Would', 'is it', 'Can you help me?', 'Can you explain this?', 'What does this mean?', 'What does that mean?', 'Could you repeat that?', 'How do I do this?', 'How do I do that?', 'Is this correct?','Can you show me how to do this?', 'Can you show me how to do that?'],
         'responses': ['yes', 'no', 'maybe', 'sort of', 'I agree', 'I disagree', 'I understand', 'I dont understand', 'I need help', 'good idea', 'can you explain more', 'Ill let you know'],
         'subjects': ['I', 'you', 'we', 'his', 'she', 'hers', 'they', 'them', 'their', 'it', 'the group'],
         'verbs': ['am', 'is', 'are', 'was', 'were', 'have', 'need', 'want', 'like', 'think', 'know', 'understand', 'finished'],
