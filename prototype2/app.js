@@ -243,6 +243,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         }
+
+        // more complex sequences, three words to next word
+        Object.entries(improvedLanguageModel).forEach(([word1, predictions1]) => {
+            predictions1.forEach(word2 => {
+                if (improvedLanguageModel[word2]) {
+                    improvedLanguageModel[word2].forEach(word3 => {
+                        const idx1 = wordIndex[word1.toLowerCase()] || 0;
+                        const idx2 = wordIndex[word2.toLowerCase()] || 0;
+                        const idx3 = wordIndex[word3.toLowerCase()] || 0;
+                        
+                        if (idx1 > 0 && idx2 > 0 && idx3 > 0) {
+                            // valid triple, predict several possible next words
+                            const possibleNextWords = (improvedLanguageModel[word3] || []).slice(0, 5);
+                            
+                            possibleNextWords.forEach(nextWord => {
+                                const nextWordIdx = wordIndex[nextWord.toLowerCase()] || 0;
+                                if (nextWordIdx > 0) {
+                                    const sequence = [0, 0, idx1, idx2, idx3];
+                                    sequences.push(sequence);
+                                    nextWords.push(nextWordIdx);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
     
         // Convert to tensors and ensure correct data type (float32 for inputs)
         const xs = tf.tensor2d(sequences, [sequences.length, 3], 'float32'); // Shape [number of sequences, sequence length]
