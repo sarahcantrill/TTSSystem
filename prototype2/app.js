@@ -272,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     
         // Convert to tensors and ensure correct data type (float32 for inputs)
-        const xs = tf.tensor2d(sequences, [sequences.length, 3], 'float32'); // Shape [number of sequences, sequence length]
+        const xs = tf.tensor2d(sequences, [sequences.length, 5], 'float32'); // Shape [number of sequences, sequence length]
         const ys = tf.tensor1d(nextWords, 'float32'); // Labels (integer indices of the next word)
 
         console.log(`Training model with ${sequences.length} sequences...`);
@@ -347,8 +347,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const suggestions = indices.map(index => reverseWordIndex[index])
                 .filter(word => word);
             
-            // Clean tensors
-            input.dispose();
+            // clean tensors
+            // input.dispose();
+            // prediction.dispose();
+            inputTensor.dispose();
             prediction.dispose();
 
             //if there is valid suggestions, suggest them 
