@@ -482,7 +482,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Add space after word
+    // add space after word
     function addSpace() {
         const currentText = textOutput.value;
         if (currentText.length > 0 && !currentText.endsWith(' ')) {
@@ -491,7 +491,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Reset text
+    // reset text
     function resetText() {
         textOutput.value = "";
         textHistory = [''];
@@ -499,7 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateWordSuggestions();
     }
 
-    // Undo action
+    // undo action
     function undoAction() {
         if (currentHistoryIndex > 0) {
             currentHistoryIndex--;
@@ -508,30 +508,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Add event listeners
+    // add event listeners
     function setupEventListeners() {
-        // Word buttons
+        // word buttons
         wordboxes.forEach(button => {
             button.addEventListener("click", () => {
                 addWordToOutput(button.textContent);
             });
         });
         
-        // Reset button
+        // reset button
         resetButton.addEventListener("click", resetText);
         
-        // Undo button
+        // undo button
         undoButton.addEventListener("click", () => {
             let words = textOutput.value.trim().split(" ");
             if (words.length > 0) {
-                words.pop(); // Remove the last word
+                words.pop(); // remove the last word
                 textOutput.value = words.join(" ");
                 if (words.length > 0) textOutput.value += " ";
                 updateWordSuggestions();
             }
         });
         
-        // Tab switching
+        // tab switching
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
                 tabButtons.forEach(btn => btn.classList.remove('active'));
@@ -543,16 +543,16 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
         
-        // Text output changes
+        // text output changes
         textOutput.addEventListener('input', updateWordSuggestions);
     }
 
-    // Initialize everything
+    // initialise everything
     async function init() {
-        // Setup event listeners
+        //  event listeners
         setupEventListeners();
         
-        // Try to initialize TensorFlow
+        // try to initialize TensorFlow
         if (tf) {
             try {
                 await initTensorFlow();
