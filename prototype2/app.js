@@ -25,6 +25,47 @@ document.addEventListener("DOMContentLoaded", () => {
     let tfLoaded = false;
     let tf = window.tf; // Declare TensorFlow var
 
+    //expnaded word lists with common words 
+    const commonEnglishWords = [
+        // Basic words (existing)
+        'I', 'you', 'we', 'they', 'he', 'she', 'it', 'am', 'is', 'are', 'was', 'were',
+        'the', 'a', 'an', 'and', 'but', 'or', 'because', 'if', 'when', 'where', 'how', 'what', 'why',
+        'to', 'in', 'on', 'at', 'by', 'with', 'of', 'for', 'from', 'about',
+        
+        // verbs
+        'have', 'has', 'had', 'do', 'does', 'did', 'go', 'goes', 'went', 'say', 'says', 'said',
+        'get', 'gets', 'got', 'make', 'makes', 'made', 'know', 'knows', 'knew', 'think', 'thinks', 'thought',
+        'take', 'takes', 'took', 'see', 'sees', 'saw', 'come', 'comes', 'came', 'want', 'wants', 'wanted',
+        'use', 'uses', 'used', 'find', 'finds', 'found', 'give', 'gives', 'gave', 'tell', 'tells', 'told',
+        'work', 'works', 'worked', 'call', 'calls', 'called', 'try', 'tries', 'tried', 'ask', 'asks', 'asked',
+        'need', 'needs', 'needed', 'feel', 'feels', 'felt', 'become', 'becomes', 'became', 'like', 'likes', 'liked',
+        
+        // nouns
+        'time', 'year', 'people', 'way', 'day', 'man', 'woman', 'child', 'children', 'world',
+        'life', 'hand', 'part', 'eye', 'place', 'work', 'week', 'case', 'point', 'government',
+        'company', 'number', 'group', 'problem', 'fact', 'be', 'person', 'school', 'morning', 'evening',
+        
+        // adjectives
+        'good', 'new', 'first', 'last', 'long', 'great', 'little', 'own', 'other', 'old',
+        'right', 'big', 'high', 'different', 'small', 'large', 'next', 'early', 'young', 'important',
+        'few', 'public', 'bad', 'same', 'able', 'best', 'better', 'happy', 'sad', 'tired',
+        
+        // time words
+        'today', 'tomorrow', 'yesterday', 'now', 'later', 'soon', 'never', 'always', 'sometimes', 'often',
+        
+        // question words (expanded)
+        'who', 'whom', 'whose', 'which', 'whatever', 'whichever', 'whoever', 'whomever',
+        
+        // prepositions (expanded)
+        'through', 'between', 'among', 'across', 'after', 'before', 'during', 'until', 'against', 'into',
+        
+        // common phrases for AAC users
+        'help me', 'thank you', 'please', 'I need', 'I want', 'I feel', 'can you', 'could you',
+        'bathroom', 'hungry', 'thirsty', 'tired', 'pain', 'uncomfortable', 'medicine', 'doctor',
+        'too hot', 'too cold', 'yes please', 'no thanks', 'not sure', 'maybe', 'definitely',
+        'family', 'friend', 'nurse', 'caregiver', 'appointment', 'schedule', 'visit', 'call'
+    ];
+
     const categoryWords = {
         'starters': ['I', 'You', 'We', 'They', 'He', 'She', 'It', 'Please', 'Today', 'Could', 'Would'],
         'questions': ['who', 'what', 'when', 'where', 'why', 'can I', 'could you', 'please', 'do you', 'Could', 'Would', 'is it'],
