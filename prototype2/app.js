@@ -275,13 +275,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const xs = tf.tensor2d(sequences, [sequences.length, 3], 'float32'); // Shape [number of sequences, sequence length]
         const ys = tf.tensor1d(nextWords, 'float32'); // Labels (integer indices of the next word)
 
-    
-        // Train model
+        console.log(`Training model with ${sequences.length} sequences...`);
+
+        // train model
         await model.fit(xs, ys, {
             epochs: 50,
-            batchSize: 8,
+            batchSize: 32,
             shuffle: true,
-            verbose: 0
+            verbose: 0,
+            callbacks: {
+                // onEpochEnd: (epoch, logs) => {
+                //     if (epoch % 10 === 0) {
+                //         console.log(`Epoch ${epoch}: loss = ${logs.loss.toFixed(4)}, accuracy = ${logs.acc.toFixed(4)}`);
+                //     }
+                // }
+            }
         });
 
         // model.add(tf.layers.lstm({
