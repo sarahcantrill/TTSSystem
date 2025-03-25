@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         //existing options cleared
         voiceSelect.innerHTML = '<option value="">Select Voice</option>';
-        const voices = synth.getVoices(); //avaible voices 
+        const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en'));
 
         //fill dropdown with voices
         voices.forEach((voice, index) => {
