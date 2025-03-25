@@ -31,6 +31,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const synth = window.speechSynthesis
     let selectedVoice = null
 
+    // voice selection dropdown
+    function populateVoiceList() {
+        const voiceSelect = document.getElementById('voice-select');
+        
+        //existing options cleared
+        voiceSelect.innerHTML = '<option value="">Select Voice</option>';
+        const voices = synth.getVoices(); //avaible voices 
+
+        //fill dropdown with voices
+        voices.forEach((voice, index) => {
+            const option = document.createElement('option');
+            option.textContent = `${voice.name} (${voice.lang})`;
+            option.setAttribute('data-lang', voice.lang);
+            option.setAttribute('data-name', voice.name);
+            option.value = index;
+            voiceSelect.appendChild(option);
+        });
+
+        //default voice 
+        if (voices.length > 0) {
+            const defaultVoice = voices.find(voice => 
+                voice.lang.includes('en-') && 
+                (voice.name.toLowerCase().includes('female') || 
+                 voice.name.toLowerCase().includes('male'))
+            ) || voices[0];
+            
+            if (defaultVoice) {
+                voiceSelect.value = voices.indexOf(defaultVoice);
+                selectedVoice = defaultVoice;
+            }
+        }
+    }
+
     //expnaded word lists with common words 
     const commonEnglishWords = [
         // Basic words (existing)
