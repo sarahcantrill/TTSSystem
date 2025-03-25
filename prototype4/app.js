@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextWordSuggestions = document.getElementById("nextWordSuggestions");
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
+    const speakButton = document.querySelector(".speak-btn")
+    const voiceSelect = document.getElementById("voice-select")
 
     if (!textOutput || !resetButton || !undoButton || !nextWordSuggestions || !tabButtons.length || !tabContents.length) {
         console.error("One or more elements are missing from the DOM.");
@@ -23,7 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let reverseWordIndex = {};
     let model = null;
     let tfLoaded = false;
-    let tf = window.tf; // Declare TensorFlow var
+    let tf = window.tf; // declare TensorFlow var
+
+    // speech synthesis set upb
+    const synth = window.speechSynthesis
+    let selectedVoice = null
 
     //expnaded word lists with common words 
     const commonEnglishWords = [
