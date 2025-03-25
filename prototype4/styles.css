@@ -77,8 +77,8 @@ button {
     flex-direction: column;
     margin: 10%;
     gap: 10%;
-    padding: 10%;
-    font-size: 1em;
+    padding: 5%;
+    font-size: 0.5em;
     border-radius: 10px;
     border-color: lightgray;
     cursor: pointer;
