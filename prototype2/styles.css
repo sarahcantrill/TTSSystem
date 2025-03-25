@@ -26,7 +26,7 @@ button {
 }
 
 #text-output {
-    width: 50%;
+    width: 60%;
     height:200px;
     display: block;
    /* margin: 0 auto;*/
@@ -47,7 +47,7 @@ button {
 }
 
 .word-bank {
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
 }
 
@@ -57,7 +57,7 @@ button {
 }
 
 .word-box {
-    padding: 2%;
+    padding: 1%;
     background-color: #3498db;
     color: white;
     border: none;
@@ -154,7 +154,7 @@ button {
     justify-content: center;
     margin-left: auto;
     gap: 20px;
-    padding: 20px;
+    padding: 1%;
     font-size: 20px;
     border-radius: 10px;
     border-color: lightgray;
