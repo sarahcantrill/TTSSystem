@@ -64,6 +64,45 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // voice changes
+    voiceSelect.addEventListener("change", (event) => {
+        const voices = synth.getVoices()
+        selectedVoice = voices[event.target.value]
+    })
+
+    //speak functionality
+    function speakText() {
+        const textToSpeak = textOutput.value.trim()
+
+        if (!textToSpeak) {
+        alert("Please enter some text to speak.")
+        return
+        }
+
+        //new speech utterance
+        const utterance = new SpeechSynthesisUtterance(textToSpeak)
+
+        //selected voice if available
+        if (selectedVoice) {
+        utterance.voice = selectedVoice
+        }
+
+        //adjust speech parameters
+        utterance.pitch = 1 // 0 to 2
+        utterance.rate = 1 // 0.1 to 10
+        utterance.volume = 1 // 0 to 1
+
+        //speak
+        synth.speak(utterance)
+    }
+
+    speakButton.addEventListener("click", speakText)
+
+    // voices are loaded
+    if (synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = populateVoiceList
+    }
+
     //expnaded word lists with common words 
     const commonEnglishWords = [
         // Basic words (existing)
