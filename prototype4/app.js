@@ -30,14 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // speech synthesis set upb
     const synth = window.speechSynthesis
     let selectedVoice = null
+    const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
 
     // voice selection dropdown
     function populateVoiceList() {
+
         const voiceSelect = document.getElementById('voice-select');
         
         //existing options cleared
         voiceSelect.innerHTML = '<option value="">Select Voice</option>';
-        const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en'));
+        const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
 
         //fill dropdown with voices
         voices.forEach((voice, index) => {
@@ -49,20 +51,49 @@ document.addEventListener("DOMContentLoaded", () => {
             voiceSelect.appendChild(option);
         });
 
-        //default voice 
+        // default voice
         if (voices.length > 0) {
-            const defaultVoice = voices.find(voice => 
-                voice.lang.includes('en-') && 
-                (voice.name.toLowerCase().includes('female') || 
-                 voice.name.toLowerCase().includes('male'))
-            ) || voices[0];
+            // console.log("male");
+            // let defaultVoice = voices.find(voice =>
+            //     voice.lang.startsWith('en-GB') &&
+            //     voice.name.toLowerCase().includes('Male')
+                
+            // );
+            let voices = speechSynthesis.getVoices();
+            // Find all matching voices
+            let matchingVoices = voices.filter(voice =>
+                voice.lang.startsWith('en-GB') &&
+                voice.name.toLowerCase().includes('male')
+            );
+            let defaultVoice = matchingVoices.length > 0 ? matchingVoices[matchingVoices.length - 1] : null;
+            console.log(defaultVoice);
             
+
+            // if (!defaultVoice) {
+            //     defaultVoice = voices.find(voice =>
+            //         voice.lang.includes('en-') &&
+            //         (voice.name.toLowerCase().includes('female') ||
+            //          voice.name.toLowerCase().includes('male'))
+            //     ) || voices[0];
+            // }
+
             if (defaultVoice) {
                 voiceSelect.value = voices.indexOf(defaultVoice);
                 selectedVoice = defaultVoice;
+                console.log("selectedVoice is:")
+                console.log(selectedVoice)
             }
         }
     }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = () => {
+            populateVoiceList();
+        };
+    } else {
+        populateVoiceList(); // Fallback in case onvoiceschanged is not triggered
+    }
+    
 
     // voice changes
     voiceSelect.addEventListener("change", (event) => {
@@ -139,9 +170,9 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // common phrases for AAC users
         'help me', 'thank you', 'please', 'I need', 'I want', 'I feel', 'can you', 'could you',
-        'bathroom', 'hungry', 'thirsty', 'tired', 'pain', 'uncomfortable', 'medicine', 'doctor',
+        'bathroom', 'hungry', 'thirsty', 'tired', 'pain', 'uncomfortable', 'medicine', 'teacher',
         'too hot', 'too cold', 'yes please', 'no thanks', 'not sure', 'maybe', 'definitely',
-        'family', 'friend', 'nurse', 'caregiver', 'appointment', 'schedule', 'visit', 'call'
+        'family', 'friend', 'assistance', 'caregiver', 'appointment', 'schedule', 'visit', 'call'
     ];
 
     const categoryWords = {
@@ -176,14 +207,14 @@ document.addEventListener("DOMContentLoaded", () => {
         'should': ['I', 'you', 'we', 'they', 'he', 'she', 'it', 'go', 'come', 'make', 'take', 'get', 'find', 'tell', 'ask', 'show', 'give', 'help', 'see', 'hear'],
         
         // common verbs with objects
-        'need': ['to', 'a', 'some', 'help', 'assistance', 'support', 'information', 'time', 'water', 'food', 'medicine', 'rest', 'break', 'bathroom', 'doctor'],
+        'need': ['to', 'a', 'some', 'help', 'assistance', 'support', 'information', 'time', 'water', 'food', 'medicine', 'rest', 'break', 'bathroom', 'teacher'],
         'want': ['to', 'a', 'some', 'more', 'less', 'this', 'that', 'it', 'water', 'food', 'help', 'rest', 'break', 'bathroom', 'medicine'],
         'like': ['to', 'this', 'that', 'it', 'them', 'the', 'a', 'some', 'more', 'less', 'your', 'my', 'his', 'her', 'their'],
         'have': ['a', 'an', 'the', 'some', 'any', 'many', 'more', 'less', 'this', 'that', 'these', 'those', 'to', 'been', 'my', 'your', 'our'],
         
         // articles with nouns
-        'a': ['little', 'lot', 'few', 'bit', 'moment', 'second', 'minute', 'day', 'week', 'month', 'year', 'person', 'doctor', 'nurse', 'problem', 'question'],
-        'the': ['same', 'other', 'next', 'last', 'first', 'second', 'third', 'doctor', 'nurse', 'bathroom', 'medication', 'medicine', 'pain', 'hospital'],
+        'a': ['little', 'lot', 'few', 'bit', 'moment', 'second', 'minute', 'day', 'week', 'month', 'year', 'person', 'teacher', 'assistance', 'problem', 'question'],
+        'the': ['same', 'other', 'next', 'last', 'first', 'second', 'third', 'teacher', 'assistance', 'bathroom', 'medication', 'medicine', 'pain', 'hospital'],
         
         // adjectives with nouns
         'good': ['morning', 'afternoon', 'evening', 'night', 'day', 'time', 'idea', 'choice', 'decision', 'job', 'work', 'question', 'answer'],
@@ -284,14 +315,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 activation: 'softmax'
             }));
 
-            // Compile model
+            // compile model
             model.compile({
                 optimizer: tf.train.adam(0.001),
                 loss: 'sparseCategoricalCrossentropy',
                 metrics: ['accuracy']
             });
 
-            // Train model with basic patterns
+            // train model with basic patterns
             await trainModel();
 
             tfLoaded = true;
@@ -302,19 +333,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Train model with basic patterns
+    // train model with basic patterns
     async function trainModel() {
         const sequences = [];
         const nextWords = [];
     
-        // Create training data from language model
+        // create training data from language model
         for (const [word, predictions] of Object.entries(improvedLanguageModel)) {
             const wordIdx = wordIndex[word.toLowerCase()] || 0;
             
             predictions.forEach(nextWord => {
                 const nextWordIdx = wordIndex[nextWord.toLowerCase()] || 0;
                 if (nextWordIdx > 0) {
-                    // Ensure that the sequence length is 5
+                    // ensure that the sequence length is 5
                     const sequence = [0, 0, 0, 0, wordIdx]; // 5 elements with mostly padding at first
                     sequences.push(sequence); 
                     nextWords.push(nextWordIdx);
@@ -382,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
 
-    // Get word suggestions based on TensorFlow model
+    //  word suggestions based on TensorFlow model
     async function predictNextWords(text) {
         if (!text || !tfLoaded || !model) return null;
         
@@ -469,7 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 'I am': ['feeling', 'going', 'trying', 'looking', 'thinking', 'working', 'ready', 'not', 'here', 'tired'],
                 'I need': ['help', 'to', 'a', 'some', 'more', 'information', 'assistance', 'water', 'food', 'medicine'],
                 'I want': ['to', 'a', 'some', 'more', 'help', 'food', 'water', 'rest', 'something', 'it'],
-                'thank you': ['for', 'so', 'very', 'much', '.', '!', 'kindly', 'again', 'doctor', 'nurse'],
+                'thank you': ['for', 'so', 'very', 'much', '.', '!', 'kindly', 'again', 'teacher', 'assistant'],
                 'can you': ['help', 'please', 'get', 'bring', 'find', 'tell', 'show', 'explain', 'repeat', 'do'],
                 'could you': ['please', 'help', 'get', 'bring', 'find', 'tell', 'show', 'explain', 'repeat', 'do']
             };

@@ -54,6 +54,7 @@ button {
 .common-words-container {
     width: 60%;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .word-box {
@@ -85,7 +86,7 @@ button {
 }
 
 .tab-container {
-    margin-top: 20px 0;
+    /* margin-top: 20px 0; */
     margin-bottom: 0;
 }
 
