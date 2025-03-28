@@ -39,7 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
         
         //existing options cleared
         voiceSelect.innerHTML = '<option value="">Select Voice</option>';
-        const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
+
+        //const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
+        // AFTER:
+        const allVoices = synth.getVoices();
+        // Filter to only include the requested voices
+        const allowedVoiceNames = ['Daniel', 'Arthur', 'Martha', 'Google UK English Female', 'Google UK English Male'];
+        const voices = allVoices.filter(voice => allowedVoiceNames.includes(voice.name));
 
         //fill dropdown with voices
         voices.forEach((voice, index) => {
@@ -101,9 +107,24 @@ document.addEventListener("DOMContentLoaded", () => {
     //     selectedVoice = voices[event.target.value]
     // })
 
+    // voiceSelect.addEventListener("change", (event) => {
+    //     const selectedIndex = event.target.value;
+    //     const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
+        
+    //     // validating
+    //     if (selectedIndex !== "" && voices[selectedIndex]) {
+    //         selectedVoice = voices[selectedIndex];
+    //         console.log("Selected Voice:", selectedVoice.name);
+    //     } else {
+    //         console.warn("Invalid voice selection");
+    //     }
+    // });
+
     voiceSelect.addEventListener("change", (event) => {
         const selectedIndex = event.target.value;
-        const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
+        const allVoices = synth.getVoices();
+        const allowedVoiceNames = ['Daniel', 'Arthur', 'Martha', 'Google UK English Female', 'Google UK English Male'];
+        const voices = allVoices.filter(voice => allowedVoiceNames.includes(voice.name));
         
         // validating
         if (selectedIndex !== "" && voices[selectedIndex]) {
