@@ -96,10 +96,23 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
     // voice changes
+    // voiceSelect.addEventListener("change", (event) => {
+    //     const voices = synth.getVoices()
+    //     selectedVoice = voices[event.target.value]
+    // })
+
     voiceSelect.addEventListener("change", (event) => {
-        const voices = synth.getVoices()
-        selectedVoice = voices[event.target.value]
-    })
+        const selectedIndex = event.target.value;
+        const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
+        
+        // validating
+        if (selectedIndex !== "" && voices[selectedIndex]) {
+            selectedVoice = voices[selectedIndex];
+            console.log("Selected Voice:", selectedVoice.name);
+        } else {
+            console.warn("Invalid voice selection");
+        }
+    });
 
     //speak functionality
     function speakText() {
