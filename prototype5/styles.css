@@ -101,12 +101,15 @@ h2 {
     flex-direction: column;
     margin: 10%;
     gap: 10%;
-    padding: 3%;
+    padding: 0.5em 2em; /* Increase padding for larger buttons */
     font-size: 1.1em;
     border-radius: 10px;
     border-color: lightgray;
     cursor: pointer;
     width: 30%;
+    display: flex; /* Use flexbox to center the text */
+    justify-content: center; /* Horizontally centers the text */
+    align-items: center;
 }
 
 .control-btns button:hover, .play-pause-container button:hover {
