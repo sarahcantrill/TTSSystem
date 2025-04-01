@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextWordSuggestions = document.getElementById("nextWordSuggestions");
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabContents = document.querySelectorAll(".tab-content");
-    const speakButton = document.querySelector(".speak-btn")
+    const speakButton = document.querySelector(".speak-btn");
+    const pauseButton = document.querySelector(".pause-btn");
     const voiceSelect = document.getElementById("voice-select")
 
     if (!textOutput || !resetButton || !undoButton || !nextWordSuggestions || !tabButtons.length || !tabContents.length) {
@@ -31,6 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const synth = window.speechSynthesis
     let selectedVoice = null
     const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
+
+    //add state tracking variables 
+    let isSpeaking = false;
+    let isPaused = false;
+    let currentUtterance = null;
 
     // voice selection dropdown
     function populateVoiceList() {
@@ -140,27 +146,92 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!textToSpeak) {
         alert("Please enter some text to speak.")
-        return
+        return;
+        }
+
+        // if already paused, resume speech
+        if (isPaused && currentUtterance) {
+            resumeSpeech();
+            return;
+        }
+
+        //if already speaking, stop current speech before starting new one
+        if (isSpeaking) {
+            synth.cancel()
         }
 
         //new speech utterance
-        const utterance = new SpeechSynthesisUtterance(textToSpeak)
+        // const utterance = new SpeechSynthesisUtterance(textToSpeak)
+        // Create new speech utterance
+        currentUtterance = new SpeechSynthesisUtterance(textToSpeak)
 
         //selected voice if available
         if (selectedVoice) {
-        utterance.voice = selectedVoice
+            currentUtterance.voice = selectedVoice
         }
 
         //adjust speech parameters
-        utterance.pitch = 1 // 0 to 2
-        utterance.rate = 1 // 0.1 to 10
-        utterance.volume = 1 // 0 to 1
+        currentUtterance.pitch = 1 // 0 to 2
+        currentUtterance.rate = 1 // 0.1 to 10
+        currentUtterance.volume = 1 // 0 to 1
+
+        //speech state in console
+        currentUtterance.onstart = () => {
+            isSpeaking = true
+            isPaused = false
+            console.log("Speech started")
+          }
+      
+          currentUtterance.onend = () => {
+            isSpeaking = false
+            isPaused = false
+            currentUtterance = null
+            console.log("Speech ended")
+          }
+      
+          currentUtterance.onpause = () => {
+            isPaused = true
+            console.log("Speech paused")
+          }
+      
+          currentUtterance.onresume = () => {
+            isPaused = false
+            console.log("Speech resumed")
+          }
 
         //speak
-        synth.speak(utterance)
+        synth.speak(currentUtterance)
+    }
+
+    // pause speech function
+    function pauseSpeech() {
+        if (isSpeaking && !isPaused) {
+            synth.pause();
+            isPaused = true;
+            console.log("Speech paused manually");
+        }
+    }
+
+    // resume speech function
+    function resumeSpeech() {
+        if (isPaused) {
+            synth.resume();
+            isPaused = false;
+            console.log("Speech resumed manually");
+        }
+    }
+
+    // reset speech function
+    function resetSpeech() {
+        synth.cancel();
+        isSpeaking = false;
+        isPaused = false;
+        currentUtterance = null;
+        console.log("Speech reset");
     }
 
     speakButton.addEventListener("click", speakText)
+    pauseButton.addEventListener("click", pauseSpeech);
 
     // voices are loaded
     if (synth.onvoiceschanged !== undefined) {
@@ -662,7 +733,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         
         // reset button
-        resetButton.addEventListener("click", resetText);
+        // resetButton.addEventListener("click", resetText);
+        resetButton.addEventListener("click", () => {
+            resetText();
+            resetSpeech();
+        });
         
         // undo button
         undoButton.addEventListener("click", () => {
