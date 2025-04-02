@@ -49,6 +49,13 @@ h2 {
 }
 
 @media (max-width: 768px) {
+    #text-output {
+      width: 50%;
+      margin: 2% auto;
+    }
+  } 
+  
+  @media (max-width: 768px) {
     .common-words-container,
     .word-bank,
     .suggestion-section {
@@ -121,6 +128,14 @@ h2 {
     align-items: center;
 }
 
+@media (max-width: 768px) {
+    .control-btns button, .voice-select {
+      font-size: 1em;
+      margin: 2% auto;
+      margin-top: 40%;
+    }
+  } 
+
 .control-btns button:hover, .play-pause-container button:hover {
     background-color: darkgray;
     color: white;
@@ -177,6 +192,13 @@ h2 {
     align-items: center;
     border: none;
 }
+
+@media (max-width: 768px) {
+    .play-pause-container button {
+      margin: 2% auto;
+      margin-top: 40%;
+    }
+  } 
 
 .tab-container {
     /* margin-top: 20px 0; */
