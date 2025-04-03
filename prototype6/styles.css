@@ -156,8 +156,8 @@ h2 {
 .control-btns button, .voice-select {
     display: flex;
     flex-direction: column;
-    margin: 10%;
-    gap: 10%;
+    margin: 12%;
+    /* gap: 10%; */
     padding: 0.5em 2em; 
     font-size: 1.5em;
     border-radius: 10px;
@@ -178,7 +178,7 @@ h2 {
   } 
 
   #voice-select.voice-select {
-    width: 100%; 
+    width: 170%; 
     padding: 0.5em; 
     font-size: 1em; 
     border: 1px solid lightgray; 
@@ -235,7 +235,7 @@ h2 {
 
 .pause-btn {
     background-color: #FFBF00;
-    width: 60%;
+    width: 80%;
 }
 
 .speak-btn {
@@ -243,8 +243,15 @@ h2 {
     color: white;
     /* padding: 20%; */
     height: 4em;
+    width: 80%;
+}
+
+.repeat-btn {
+    background-color: #9370DB;
+    color: white;
     width: 60%;
 }
+
 
 
 .play-pause-container button {
