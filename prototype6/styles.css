@@ -75,8 +75,9 @@ h2 {
     width: 40%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin-left: 3%;
+    gap: 1.5rem;
+    margin-left: 2%;
+    /* font-size: 1.5em; */
   }
 
   .word-bank {
@@ -102,17 +103,31 @@ h2 {
     /* margin: 0 auto; */
 }
 
+.common-words-container .word-box {
+    font-size: 1.2em; 
+    padding: 1.8% 2.5%;
+}
+
+.suggestion-section .button-container button {
+    font-size: 1.2em;
+    padding: 1.8% 2.5%;
+}
+
 /* made to be standard  */
 /* .word-bank {
     width: 80%;
     margin: 0 auto;
-}
+}*/
 
 .common-words-container {
-    width: 60%;
-    margin: 0 auto;
-    box-sizing: border-box;
-} */
+    background-color: lightblue;
+    padding: 2% 5% 5% 5%;
+} 
+
+.suggestion-section{
+    background-color: lightgray;
+    padding: 2% 5% 5% 5%;
+}
 
 .word-box {
     padding: 1.5% 2%;
@@ -192,6 +207,25 @@ h2 {
 .control-btns {
     /* border: 2px solid red; Adds a visible border */
     width: 15%;
+}
+
+.reset-btn {
+    background-color: red;
+    color: white;
+}
+
+/* .undo-btn {
+    background-color: purple;
+} */
+
+.pause-btn {
+    background-color: #FFBF00;
+}
+
+.speak-btn {
+    background-color: green;
+    color: white;
+    padding: 20%;
 }
 
 
