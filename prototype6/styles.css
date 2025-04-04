@@ -297,18 +297,69 @@ h2 {
     margin-right: 1%;
     margin-bottom: 1%;
     font-size: 1.25em;
+    border-bottom: 3px solid transparent;
 }
 
 .tab-btn.active {
-    background-color: #3498db;
+    /* background-color: #3498db; */
     color: white;
-    border: 0.1em solid darkgray;
+    border: none;
+    border-bottom: 3px solid;
 }
 
-.tab-btn:hover {
+/* .tab-btn:hover {
     background-color: lightgrey;
     color: black;
-}
+} */
+
+/*each tab button */
+.tab-btn[data-tab="starters"] {
+    border-color: #3498db; /* Inactive border color */
+  }
+  .tab-btn[data-tab="starters"].active {
+    background-color: #3498db; /* active background */
+    border-color: #3498db; /* active border color */
+  }
+  
+  .tab-btn[data-tab="questions"] {
+    border-color: #e74c3c; 
+  }
+  .tab-btn[data-tab="questions"].active {
+    background-color: #e74c3c; 
+    border-color: #e74c3c; 
+  }
+  
+  .tab-btn[data-tab="responses"] {
+    border-color: #2ecc71; 
+  }
+  .tab-btn[data-tab="responses"].active {
+    background-color: #2ecc71; 
+    border-color: #2ecc71; 
+  }
+  
+  .tab-btn[data-tab="subjects"] {
+    border-color: #f39c12; 
+  }
+  .tab-btn[data-tab="subjects"].active {
+    background-color: #f39c12; 
+    border-color: #f39c12;
+  }
+  
+  .tab-btn[data-tab="verbs"] {
+    border-color: #9b59b6;
+  }
+  .tab-btn[data-tab="verbs"].active {
+    background-color: #9b59b6; 
+    border-color: #9b59b6; 
+  }
+  
+  .tab-btn[data-tab="common"] {
+    border-color: #1abc9c;
+  }
+  .tab-btn[data-tab="common"].active {
+    background-color: #1abc9c; 
+    border-color: #1abc9c;
+  }
 
 .tab-content {
     display: none;
@@ -324,6 +375,37 @@ h2 {
 .tab-content.active {
     display: flex;
 }
+
+/* border colour */
+#starters.tab-content.active {
+    display: flex;
+    border-color: #3498db; 
+  }
+  
+  #questions.tab-content.active {
+    display: flex;
+    border-color: #e74c3c;
+  }
+  
+  #responses.tab-content.active {
+    display: flex;
+    border-color: #2ecc71; 
+  }
+  
+  #subjects.tab-content.active {
+    display: flex;
+    border-color: #f39c12; 
+  }
+  
+  #verbs.tab-content.active {
+    display: flex;
+    border-color: #9b59b6; 
+  }
+  
+  #common.tab-content.active {
+    display: flex;
+    border-color: #1abc9c; 
+  }
 
 .hint-section {
     margin: 2% 0;
