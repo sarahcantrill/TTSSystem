@@ -191,6 +191,16 @@ document.addEventListener("DOMContentLoaded", () => {
             isPaused = false
             currentUtterance = null
             console.log("Speech ended")
+
+            // clear the text output after speech is complete
+            textOutput.value = "";
+            
+            //update history to include the empty state
+            textHistory.push("");
+            currentHistoryIndex = textHistory.length - 1;
+            
+            // word suggestions for the empty text
+            updateWordSuggestions();
           }
       
           currentUtterance.onpause = () => {
@@ -238,6 +248,15 @@ document.addEventListener("DOMContentLoaded", () => {
             isPaused = false
             currentUtterance = null
             console.log("Repeat speech ended")
+
+            textOutput.value = "";
+  
+            //update history to include the empty state
+            textHistory.push("");
+            currentHistoryIndex = textHistory.length - 1;
+            
+            // word suggestions for the empty state
+            updateWordSuggestions();
           }
     
           currentUtterance.onpause = () => {
