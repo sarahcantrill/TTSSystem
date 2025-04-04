@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabContents = document.querySelectorAll(".tab-content");
     const speakButton = document.querySelector(".speak-btn");
     const pauseButton = document.querySelector(".pause-btn");
-    const voiceSelect = document.getElementById("voice-select")
+    const repeatButton = document.querySelector(".repeat-btn");
+    const voiceSelect = document.getElementById("voice-select");
 
     if (!textOutput || !resetButton || !undoButton || !nextWordSuggestions || !tabButtons.length || !tabContents.length) {
         console.error("One or more elements are missing from the DOM.");
@@ -37,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let isSpeaking = false;
     let isPaused = false;
     let currentUtterance = null;
+    let lastSpokenText = ""
 
     // voice selection dropdown
     function populateVoiceList() {
@@ -149,6 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
         }
 
+        lastSpokenText = textToSpeak
+
         // if already paused, resume speech
         if (isPaused && currentUtterance) {
             resumeSpeech();
@@ -203,6 +207,55 @@ document.addEventListener("DOMContentLoaded", () => {
         synth.speak(currentUtterance)
     }
 
+    function repeatLastText() {
+        if (lastSpokenText) {
+          //already speech happening, cancel it
+          if (isSpeaking) {
+            synth.cancel()
+          }
+    
+          // new utterance with the last spoken text
+          currentUtterance = new SpeechSynthesisUtterance(lastSpokenText)
+    
+          //set voice
+          if (selectedVoice) {
+            currentUtterance.voice = selectedVoice
+          }
+    
+          currentUtterance.pitch = 1
+          currentUtterance.rate = 1
+          currentUtterance.volume = 1
+    
+          //event handlers
+          currentUtterance.onstart = () => {
+            isSpeaking = true
+            isPaused = false
+            console.log("Repeat speech started")
+          }
+    
+          currentUtterance.onend = () => {
+            isSpeaking = false
+            isPaused = false
+            currentUtterance = null
+            console.log("Repeat speech ended")
+          }
+    
+          currentUtterance.onpause = () => {
+            isPaused = true
+            console.log("Repeat speech paused")
+          }
+    
+          currentUtterance.onresume = () => {
+            isPaused = false
+            console.log("Repeat speech resumed")
+          }
+    
+          synth.speak(currentUtterance)
+        } else {
+          console.log("No previous text to repeat")
+        }
+      }
+
     // pause speech function
     function pauseSpeech() {
         if (isSpeaking && !isPaused) {
@@ -232,6 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     speakButton.addEventListener("click", speakText)
     pauseButton.addEventListener("click", pauseSpeech);
+    repeatButton.addEventListener("click", repeatLastText);
 
     // voices are loaded
     if (synth.onvoiceschanged !== undefined) {
