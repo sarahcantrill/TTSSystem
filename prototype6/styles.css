@@ -229,9 +229,10 @@ h2 {
     color: white;
 }
 
-/* .undo-btn {
-    background-color: purple;
-} */
+.undo-btn {
+    background-color: lightgrey;
+    color: black;
+}
 
 .pause-btn {
     background-color: #FFBF00;
@@ -252,7 +253,41 @@ h2 {
     width: 60%;
 }
 
+button:focus {
+    /* restore colours  */
+    background-color: inherit;
+    color: inherit;
+  }
+  
+  .reset-btn:focus {
+    background-color: red !important;
+    color: white !important;
+  }
 
+  .undo-btn:focus {
+    background-color: lightgrey !important;
+    /* color: white !important; */
+  }
+  
+  .speak-btn:focus {
+    background-color: green !important;
+    color: white !important;
+  }
+  
+  .pause-btn:focus {
+    background-color: #FFBF00 !important;
+  }
+  
+  .repeat-btn:focus {
+    background-color: #9370DB !important;
+    color: white !important;
+  }
+  
+  /* For standard word boxes */
+  /* .word-box:focus {
+    background-color: #3498db !important;
+    color: white !important;
+  } */
 
 .play-pause-container button {
     display: flex;
@@ -454,5 +489,11 @@ h2 {
     margin: 0 auto;
 } */
 
+button {
+    transition: background-color 1s;
+}
 
+button:focus {
+    outline: none;
+}
 
