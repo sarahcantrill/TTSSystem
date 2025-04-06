@@ -405,6 +405,14 @@ button:focus {
     color: black;
   }
 
+  .tab-btn[data-tab="adjectives"] {
+    border-color: #FF69B4;
+  }
+  .tab-btn[data-tab="adjectives"].active {
+    background-color: #FF69B4; 
+    border-color: #FF69B4;
+  }
+
 .tab-content {
     display: none;
     flex-wrap: wrap;
@@ -454,6 +462,11 @@ button:focus {
   #topics.tab-content.active {
     display: flex;
     border-color: #FFEA00; 
+  }
+
+  #adjectives.tab-content.active {
+    display: flex;
+    border-color: #FF69B4; 
   }
 
 .hint-section {
