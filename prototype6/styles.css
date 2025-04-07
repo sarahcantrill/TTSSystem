@@ -398,11 +398,11 @@ button:focus {
   }
 
   .tab-btn[data-tab="topics"] {
-    border-color: #FFEA00;
+    border-color: #FFA500;
   }
   .tab-btn[data-tab="topics"].active {
-    background-color: #FFEA00; 
-    border-color: #FFEA00;
+    background-color: #FFA500; 
+    border-color: #FFA500;
     color: black;
   }
 
@@ -423,11 +423,11 @@ button:focus {
   }
 
   .tab-btn[data-tab="requests"] {
-    border-color: #FFA500;
+    border-color: #FFEA00;
   }
   .tab-btn[data-tab="requests"].active {
-    background-color: #FFA500; 
-    border-color: #FFA500;
+    background-color: #FFEA00; 
+    border-color: #FFEA00;
   }
 
   .tab-btn[data-tab="partial-sentences"] {
@@ -486,7 +486,7 @@ button:focus {
 
   #topics.tab-content.active {
     display: flex;
-    border-color: #FFEA00; 
+    border-color: #FFA500; 
   }
 
   #adjectives.tab-content.active {
@@ -501,7 +501,7 @@ button:focus {
 
   #requests.tab-content.active {
     display: flex;
-    border-color: #FFA500; 
+    border-color: #FFEA00; 
   }
 
   #partial-sentences.tab-content.active {
