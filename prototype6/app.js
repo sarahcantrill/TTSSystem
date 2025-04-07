@@ -361,7 +361,9 @@ document.addEventListener("DOMContentLoaded", () => {
         'common': ['and', 'or', 'but', 'because', 'with', 'without', 'to', 'from', 'in', 'on', 'at', 'by', 'for'],
         'topics': ['idea', 'answer', 'question', 'presentation', 'topic', 'opinion', 'solution', 'point', 'example', 'group', 'project', 'task', 'sentence', 'word', 'slide', 'chart', 'diagram'],
         'adjectives': ['clear', 'confusing', 'interesting', 'important', 'helpful', 'difficult', 'easy', 'correct', 'wrong', 'new', 'old', 'next', 'previous', 'better'],
-        'numbers': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '25', '50', '75', '100', '%', '.', '-']
+        'numbers': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '25', '50', '75', '100', '%', '.', '-'],
+        'requests': ['Look at this', 'Can you come here?', 'Please wait', 'Next slide', 'Can you help me?', 'Please listen', 'Look over here', 'Please stop', 'Can you explain that?', 'Could you repeat that?', 'Can I get some help?', 'Can you slow down?', 'I don’t understand', 'Please show me', 'Can you write that down?', 'Can you give me a minute?', 'Could you point to that?', 'Please go slower'],
+        'sentence-starters': ['I don’t understand', 'Can you help me with', 'Is it OK if I', 'What if I do', 'I think I can', 'Could you explain', 'I’m not sure if', 'I would like to', 'What should I do if', 'I need to', 'Can I please', 'How do I', 'I feel like', 'Do I need to', 'I was wondering if', 'Could I ask', 'I don’t know how to', 'What if I don’t', 'Could you show me how to']
     };
 
     const improvedLanguageModel = {

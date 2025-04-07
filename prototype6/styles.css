@@ -358,11 +358,11 @@ button:focus {
   }
   
   .tab-btn[data-tab="questions"] {
-    border-color: #e74c3c; 
+    border-color: #FF0000; 
   }
   .tab-btn[data-tab="questions"].active {
-    background-color: #e74c3c; 
-    border-color: #e74c3c; 
+    background-color: #FF0000; 
+    border-color: #FF0000; 
   }
   
   .tab-btn[data-tab="responses"] {
@@ -422,6 +422,22 @@ button:focus {
     border-color: #4169E1;
   }
 
+  .tab-btn[data-tab="requests"] {
+    border-color: #FFA500;
+  }
+  .tab-btn[data-tab="requests"].active {
+    background-color: #FFA500; 
+    border-color: #FFA500;
+  }
+
+  .tab-btn[data-tab="partial-sentences"] {
+    border-color: #B28CE2;
+  }
+  .tab-btn[data-tab="partial-sentences"].active {
+    background-color: #B28CE2; 
+    border-color: #B28CE2;
+  }
+
 .tab-content {
     display: none;
     flex-wrap: wrap;
@@ -445,7 +461,7 @@ button:focus {
   
   #questions.tab-content.active {
     display: flex;
-    border-color: #e74c3c;
+    border-color: #FF0000;
   }
   
   #responses.tab-content.active {
@@ -481,6 +497,16 @@ button:focus {
   #numbers.tab-content.active {
     display: flex;
     border-color: #4169E1; 
+  }
+
+  #requests.tab-content.active {
+    display: flex;
+    border-color: #FFA500; 
+  }
+
+  #partial-sentences.tab-content.active {
+    display: flex;
+    border-color: #B28CE2; 
   }
 
 .hint-section {
