@@ -350,19 +350,19 @@ button:focus {
 
 /*each tab button */
 .tab-btn[data-tab="starters"] {
-    border-color: #3498db; /* Inactive border color */
+    border-color: #5DADE2; /* Inactive border color */
   }
   .tab-btn[data-tab="starters"].active {
-    background-color: #3498db; /* active background */
-    border-color: #3498db; /* active border color */
+    background-color: #5DADE2; /* active background */
+    border-color: #5DADE2; /* active border color */
   }
   
   .tab-btn[data-tab="questions"] {
-    border-color: #e74c3c; 
+    border-color: #FF0000; 
   }
   .tab-btn[data-tab="questions"].active {
-    background-color: #e74c3c; 
-    border-color: #e74c3c; 
+    background-color: #FF0000; 
+    border-color: #FF0000; 
   }
   
   .tab-btn[data-tab="responses"] {
@@ -414,6 +414,30 @@ button:focus {
     border-color: #FF69B4;
   }
 
+  .tab-btn[data-tab="numbers"] {
+    border-color: #4169E1;
+  }
+  .tab-btn[data-tab="numbers"].active {
+    background-color: #4169E1; 
+    border-color: #4169E1;
+  }
+
+  .tab-btn[data-tab="requests"] {
+    border-color: #FFA500;
+  }
+  .tab-btn[data-tab="requests"].active {
+    background-color: #FFA500; 
+    border-color: #FFA500;
+  }
+
+  .tab-btn[data-tab="partial-sentences"] {
+    border-color: #B28CE2;
+  }
+  .tab-btn[data-tab="partial-sentences"].active {
+    background-color: #B28CE2; 
+    border-color: #B28CE2;
+  }
+
 .tab-content {
     display: none;
     flex-wrap: wrap;
@@ -437,7 +461,7 @@ button:focus {
   
   #questions.tab-content.active {
     display: flex;
-    border-color: #e74c3c;
+    border-color: #FF0000;
   }
   
   #responses.tab-content.active {
@@ -468,6 +492,21 @@ button:focus {
   #adjectives.tab-content.active {
     display: flex;
     border-color: #FF69B4; 
+  }
+
+  #numbers.tab-content.active {
+    display: flex;
+    border-color: #4169E1; 
+  }
+
+  #requests.tab-content.active {
+    display: flex;
+    border-color: #FFA500; 
+  }
+
+  #partial-sentences.tab-content.active {
+    display: flex;
+    border-color: #B28CE2; 
   }
 
 .hint-section {
