@@ -360,7 +360,8 @@ document.addEventListener("DOMContentLoaded", () => {
         'verbs': ['am', 'is', 'are', 'was', 'were', 'have', 'need', 'want', 'like', 'think', 'know', 'understand', 'finished'],
         'common': ['and', 'or', 'but', 'because', 'with', 'without', 'to', 'from', 'in', 'on', 'at', 'by', 'for'],
         'topics': ['idea', 'answer', 'question', 'presentation', 'topic', 'opinion', 'solution', 'point', 'example', 'group', 'project', 'task', 'sentence', 'word', 'slide', 'chart', 'diagram'],
-        'adjectives': ['clear', 'confusing', 'interesting', 'important', 'helpful', 'difficult', 'easy', 'correct', 'wrong', 'new', 'old', 'next', 'previous', 'better']
+        'adjectives': ['clear', 'confusing', 'interesting', 'important', 'helpful', 'difficult', 'easy', 'correct', 'wrong', 'new', 'old', 'next', 'previous', 'better'],
+        'numbers': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '25', '50', '75', '100', '%', '.', '-']
     };
 
     const improvedLanguageModel = {
