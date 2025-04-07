@@ -231,7 +231,7 @@ h2 {
 
 .undo-btn {
     background-color: lightgrey;
-    color: black;
+    color: black !important;
 }
 
 .pause-btn {
@@ -266,6 +266,7 @@ button:focus {
 
   .undo-btn:focus {
     background-color: lightgrey !important;
+    color: black !important;
     /* color: white !important; */
   }
   
