@@ -353,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     const categoryWords = {
-        'starters': ['I', 'You', 'We', 'They', 'He', 'She', 'It', 'Please', 'Today', 'Could', 'Would'],
+        'starters': ['The', 'It', 'I', 'He', 'She', 'They', 'We', 'There', 'This', 'That', 'A', 'An', 'In', 'On', 'At', 'As', 'When', 'While', 'After', 'Before', 'Because', 'Although', 'Though', 'If', 'But', 'And', 'So', 'Since', 'Then', 'Now', 'However', 'Moreover', 'Furthermore', 'Therefore', 'Indeed', 'Also', 'Yet', 'Even', 'Some', 'Most', 'All', 'Each', 'One', 'Many', 'People', 'Time', 'Day'],
         'questions': ['who', 'what', 'when', 'where', 'why', 'can I', 'Can you help me?', 'Can you explain that?', 'What does this mean?', 'What does that mean?', 'Could you repeat that?', 'How do I do this?', 'How do I do that?', 'Is this correct?', 'Can you show me how to do this?', 'Can you show me how to do that?', 'Is this going to be on the exam?', 'Do we have any homework?', 'How are you?', 'What do you do?', 'What’s your name?', 'How old are you?', 'What time is it?', 'What do you think?', 'Are you alright?', 'What do you mean?', 'Can I ask you something?', 'What’s going on?', 'How many words does it have to be?', 'Can you check my work?', 'What does this word mean?'],
         'responses': ['yes', 'no', 'maybe', 'sort of', 'I agree', 'I disagree', 'I understand', 'I dont understand', 'I need help', 'good idea', 'can you explain more', 'Ill let you know'],
         'subjects': ['I', 'you', 'we', 'his', 'she', 'hers', 'they', 'them', 'their', 'it', 'the group'],
