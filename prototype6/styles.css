@@ -193,7 +193,7 @@ h2 {
 }
 
 .play-pause-container button:hover {
-    background-color: green;
+    /* background-color: green; */
     color: white;
 }
 
