@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+ <!--   <script type="module" src="script.js"></script> -->
+   <script type="module" src="app.js"></script> 
+    <title>TTS System</title>
+</head>
+<body>
+    <!-- <h1> Listen Up TTS</h1> -->
+    <h1>Text-To-Speech System</h1>
+
+
+    <section class="text-container">
+        <!-- <h2> Your text here:</h2> -->
+        <section class="output-and-buttons">
+        <textarea id="text-output" placeholder="your words here..."></textarea>
+        <aside class="control-btns">
+            <select id="voice-select" class="voice-select">
+                <option value="">Select Voice</option>
+            </select>
+            <button class="reset-btn">Clear</button>
+            <button class="undo-btn">Undo</button>
+            <button class="repeat-btn">Repeat</button>
+            <!-- <button class="speak-btn">Speak</button> -->
+            <!-- <select id="voice-select" class="voice-select">
+                <option value="">Select Voice</option>
+            </select> -->
+        </aside>
+        <aside class="play-pause-container">
+            <button class="speak-btn" aria-label="Play button">▶</button>
+            <button class="pause-btn" aria-label="Pause button">⏸</button>
+        </aside>
+    </section>
+    </section>
+
+    <div class="sections-container">
+
+    <div class="left-container">
+    <section class="common-words-container">
+    <h2 class="common-words-title">Common words</h2>
+    <section class="words-containers">
+        <button class="word-box">the</button>
+        <button class="word-box">be</button>
+        <button class="word-box">of</button>
+        <button class="word-box">and</button>
+        <button class="word-box">in</button>
+        <button class="word-box">a</button>
+        <button class="word-box">to</button>
+        <button class="word-box">it</button>
+        <button class="word-box">have</button>
+        <button class="word-box">this</button>
+        <button class="word-box">that</button>
+        <button class="word-box">on</button>
+        <button class="word-box">but</button>
+        <button class="word-box">not</button>
+        <button class="word-box">very</button>
+        <button class="word-box">. </button>
+        <button class="word-box">, </button>
+        <button class="word-box"> </button>
+
+
+    </section>
+    </section>
+
+    <div class="suggestion-section">
+        <h2 class="suggestion-title">Word Suggestions</h2>
+        <div class="button-container" id="nextWordSuggestions"></div>
+    </div>
+    </div>
+
+ <!--   <div class="button-container"></div>
+    
+    <button class="more-options-btn"> More Options</button> -->
+<div class="word-bank">
+    <h2>Word Bank</h2>
+    <div class="tab-container">
+        <button class="tab-btn active"  data-tab="starters">Sentence Starters</button>
+        <button class="tab-btn"  data-tab="questions">Questions</button>
+        <button class="tab-btn"  data-tab="responses">Responses</button>
+        <button class="tab-btn"  data-tab="subjects">Subjects</button>
+        <button class="tab-btn"  data-tab="verbs">Verbs</button>
+        <button class="tab-btn"  data-tab="common">Common Words</button>
+        <button class="tab-btn"  data-tab="topics">Topics</button>
+        <button class="tab-btn"  data-tab="adjectives">Adjectives</button>
+        <button class="tab-btn"  data-tab="numbers">Numbers</button>
+        <button class="tab-btn"  data-tab="requests">Requests</button>
+        <button class="tab-btn"  data-tab="partial-sentences">Partial Sentences</button>
+
+
+      <!--  <button class="tab-btn"  data-tab="suggestions">Suggestions</button> -->
+    </div>
+
+    <div id="starters" class="tab-content active">
+        <button class="word-box">Hi</button>
+        <button class="word-box">Hello</button>
+        <button class="word-box">Hey</button>
+        <button class="word-box">Yeah</button>
+        <button class="word-box">The</button>
+        <button class="word-box">It</button>
+        <button class="word-box">I</button>
+        <button class="word-box">He</button>
+        <button class="word-box">She</button>
+        <button class="word-box">They</button>
+        <button class="word-box">We</button>
+        <button class="word-box">We're</button>
+        <button class="word-box">We've</button>
+        <button class="word-box">There</button>
+        <button class="word-box">This</button>
+        <button class="word-box">That</button>
+        <button class="word-box">A</button>
+        <button class="word-box">An</button>
+        <button class="word-box">Anything</button>
+        <button class="word-box">In</button>
+        <button class="word-box">On</button>
+        <button class="word-box">At</button>
+        <button class="word-box">As</button>
+        <button class="word-box">When</button>
+        <button class="word-box">While</button>
+        <button class="word-box">After</button>
+        <button class="word-box">Before</button>
+        <button class="word-box">Because</button>
+        <button class="word-box">Although</button>
+        <button class="word-box">Though</button>
+        <button class="word-box">If</button>
+        <button class="word-box">But</button>
+        <button class="word-box">And</button>
+        <button class="word-box">So</button>
+        <button class="word-box">Since</button>
+        <button class="word-box">Then</button>
+        <button class="word-box">Now</button>
+        <button class="word-box">However</button>
+        <button class="word-box">Moreover</button>
+        <button class="word-box">Furthermore</button>
+        <button class="word-box">Therefore</button>
+        <button class="word-box">Indeed</button>
+        <button class="word-box">Also</button>
+        <button class="word-box">Yet</button>
+        <button class="word-box">Even</button>
+        <button class="word-box">Some</button>
+        <button class="word-box">Most</button>
+        <button class="word-box">All</button>
+        <button class="word-box">Each</button>
+        <button class="word-box">One</button>
+        <button class="word-box">Many</button>
+        <button class="word-box">People</button>
+        <button class="word-box">Time</button>
+        <button class="word-box">Day</button>
+        <button class="word-box">Could</button>
+        <button class="word-box">Would</button>
+        <button class="word-box">Please</button>
+        <button class="word-box">I think</button>
+        <button class="word-box">Let's</button>
+        <button class="word-box">How about</button>
+        <button class="word-box">Here's</button>
+        <button class="word-box">Might</button>
+        <button class="word-box">Had</button>
+        <button class="word-box">Has</button>
+    </div>
+    
+
+        <div id="questions" class="tab-content">
+            <button class="word-box">who</button>
+            <button class="word-box">what</button>
+            <button class="word-box">when</button>
+            <button class="word-box">where</button>
+            <button class="word-box">why</button>
+            <button class="word-box">how</button>
+            <button class="word-box">can I</button>
+            <!-- <button class="word-box">could you</button>
+            <button class="word-box">please</button>
+            <button class="word-box">do you</button>
+            <button class="word-box">could</button>
+            <button class="word-box">would</button>
+            <button class="word-box">is it?</button> -->
+            <button class="word-box">Can you help me?</button>
+            <button class="word-box">Can you explain that?</button>
+            <button class="word-box">What does this mean?</button>
+            <button class="word-box">What does that mean?</button>
+            <button class="word-box">Could you repeat that?</button>
+            <button class="word-box">How do I do this?</button>
+            <button class="word-box">How do I do that?</button>
+            <button class="word-box">Is this correct?</button>
+            <button class="word-box">Can you show me how to do this?</button>
+            <button class="word-box">Can you show me how to do that?</button>
+            <button class="word-box">Is this going to be on the exam?</button>
+            <button class="word-box">Do we have any homework?</button>
+            <button class="word-box">How are you?</button>
+            <button class="word-box">What do you do?</button>
+            <button class="word-box">What’s your name?</button>
+            <button class="word-box">How old are you?</button>
+            <button class="word-box">What time is it?</button>
+            <button class="word-box">What do you think?</button>
+            <button class="word-box">Are you alright?</button>
+            <button class="word-box">What do you mean?</button>
+            <button class="word-box">Can I ask you something?</button>
+            <button class="word-box">What’s going on?</button>
+            <button class="word-box">How many words does it have to be?</button>
+            <button class="word-box">Can you check my work?</button>
+            <button class="word-box">What does this word mean?</button>
+            <button class="word-box">How much?</button>
+            <button class="word-box">How long?</button>
+            <button class="word-box">What time?</button>
+            <button class="word-box">Can I?</button>
+            <button class="word-box">What is?</button>
+            <button class="word-box">Could you please?</button>
+            <button class="word-box">Would you?</button>
+        </div>
+        
+
+        <div id="responses" class="tab-content">
+            <button class="word-box">yes</button>
+            <button class="word-box">no</button>
+            <button class="word-box">maybe</button>
+            <button class="word-box">sure</button>
+            <button class="word-box">not really</button>
+            <button class="word-box">sometimes</button>
+            <button class="word-box">never</button>
+            <button class="word-box">rarely</button>
+            <button class="word-box">sort of</button>
+            <button class="word-box">I agree</button>
+            <button class="word-box">agree</button>
+            <button class="word-box">I disagree</button>
+            <button class="word-box">disagree</button>
+            <button class="word-box">I understand</button>
+            <button class="word-box">I don't understand</button>
+            <button class="word-box">I need help</button>
+            <button class="word-box">good idea</button>
+            <button class="word-box">can you explain more</button>
+            <button class="word-box">I'll let you know</button>
+            <button class="word-box">Absolutely</button>
+            <button class="word-box">I'm not sure</button>
+            <button class="word-box">That's fine</button>
+            <button class="word-box">Sounds Good</button>
+            <button class="word-box">I'm sorry </button>
+            <button class="word-box">It's OK</button>
+            <button class="word-box">thanks</button>
+            </div>
+
+        <div id="subjects" class="tab-content">
+            <button class="word-box">I</button>
+            <button class="word-box">I'm</button>
+            <button class="word-box">me</button>
+            <button class="word-box">you</button>
+            <button class="word-box">you're</button>
+            <button class="word-box">we</button>
+            <button class="word-box">he</button>
+            <button class="word-box">his</button>
+            <button class="word-box">she</button>
+            <button class="word-box">hers</button>
+            <button class="word-box">they</button>
+            <button class="word-box">them</button>
+            <button class="word-box">their</button>
+            <button class="word-box">it</button>
+            <button class="word-box">the group</button>
+            <button class="word-box">everyone</button>
+            <button class="word-box">anyone</button>
+            <button class="word-box">someone</button>
+            <button class="word-box">people</button>
+            <button class="word-box">we all</button>
+            <button class="word-box">all</button>
+            <button class="word-box">the team</button>
+            </div>
+                     
+        <div id="verbs" class="tab-content">
+            <button class="word-box">am</button>
+            <button class="word-box">is</button>
+            <button class="word-box">are</button>
+            <button class="word-box">was</button>
+            <button class="word-box">were</button>
+            <button class="word-box">have</button>
+            <button class="word-box">need</button>
+            <button class="word-box">want</button>
+            <button class="word-box">like</button>
+            <button class="word-box">think</button>
+            <button class="word-box">know</button>
+            <button class="word-box">understand</button>
+            <button class="word-box">finished</button>
+            <button class="word-box">read</button>
+            <button class="word-box">write</button>
+            <button class="word-box">say</button>
+            <button class="word-box">show</button>
+            <button class="word-box">explain</button>
+            <button class="word-box">check</button>
+            <button class="word-box">finish</button>
+            <button class="word-box">start</button>
+            <button class="word-box">can</button>
+            <button class="word-box">should</button>
+            <button class="word-box">must</button>
+            <button class="word-box">help</button>
+            <button class="word-box">ask</button>
+            <button class="word-box">repeat</button>
+            <button class="word-box">listen</button>
+            <button class="word-box">answer</button>
+            <button class="word-box">examine</button>
+            <button class="word-box">speak</button>
+            <button class="word-box">remember</button>
+            <button class="word-box">try</button>
+            <button class="word-box">work</button>
+            <button class="word-box">believe</button>
+            <button class="word-box">meet</button>
+            <button class="word-box">add</button>
+            <button class="word-box">reminds</button>
+            <button class="word-box">talk</button>
+            <button class="word-box">think</button>
+            <button class="word-box">noticed</button>
+            <button class="word-box">helped</button>
+            <button class="word-box">see</button>
+            <button class="word-box">seen</button>
+            <button class="word-box">stood</button>
+            <button class="word-box">out</button>
+            <button class="word-box">make</button>
+            <button class="word-box">makes</button>
+            <button class="word-box">get</button>
+            <button class="word-box">getting</button>
+            <button class="word-box">hope</button>
+            <button class="word-box">hoping</button>
+            <button class="word-box">go</button>
+            <button class="word-box">going</button>
+            <button class="word-box">come</button>
+            <button class="word-box">coming</button>
+            <button class="word-box">move</button>
+            <button class="word-box">moving</button>
+            <button class="word-box">cover</button>
+            <button class="word-box">covered</button>
+        </div>
+            
+
+        <div id="common" class="tab-content">
+            <button class="word-box">and</button>
+            <button class="word-box">or</button>
+            <button class="word-box">a</button>
+            <button class="word-box">but</button>
+            <button class="word-box">because</button>
+            <button class="word-box">with</button>
+            <button class="word-box">without</button>
+            <button class="word-box">to</button>
+            <button class="word-box">from</button>
+            <button class="word-box">in</button>
+            <button class="word-box">is</button>
+            <button class="word-box">on</button>
+            <button class="word-box">at</button>
+            <button class="word-box">by</button>
+            <button class="word-box">for</button>
+            <button class="word-box">too</button>
+            <button class="word-box">just</button>
+            <button class="word-box">very</button>
+            <button class="word-box">not at all</button>
+            <button class="word-box">match </button>
+            <button class="word-box">similar</button>
+            <button class="word-box">yes</button>
+            <button class="word-box">no</button>
+            <button class="word-box">about</button>
+            <button class="word-box">can</button>
+            <button class="word-box">bit</button>
+            <button class="word-box">go</button>
+            <button class="word-box">do</button>
+            <button class="word-box">done</button>
+            <button class="word-box">don't</button>
+            <button class="word-box">back</button>
+            <button class="word-box">mean</button>
+            <button class="word-box">still</button>
+            <button class="word-box">same</button>
+            </div>
+            
+        <div id="topics" class="tab-content">
+            <button class="word-box">idea</button>
+            <button class="word-box">answer</button>
+            <button class="word-box">question</button>
+            <button class="word-box">presentation</button>
+            <button class="word-box">topic</button>
+            <button class="word-box">opinion</button>
+            <button class="word-box">solution</button>
+            <button class="word-box">point</button>
+            <button class="word-box">example</button>
+            <button class="word-box">group</button>
+            <button class="word-box">project</button>
+            <button class="word-box">task</button>
+            <button class="word-box">sentence</button>
+            <button class="word-box">word</button>
+            <button class="word-box">slide</button>
+            <button class="word-box">chart</button>
+            <button class="word-box">diagram</button>
+            <button class="word-box">problem</button>
+            <button class="word-box">discussion</button>
+            <button class="word-box">desktop</button>
+            <button class="word-box">computer</button>
+            <button class="word-box">laptop</button>
+            <button class="word-box">phone</button>
+            <button class="word-box">tablet</button>
+            <button class="word-box">Ipad</button>
+            <button class="word-box">something</button>
+            <button class="word-box">else</button>
+            <button class="word-box">figure</button>
+            <button class="word-box">part</button>
+            <button class="word-box">page</button>
+            <button class="word-box">basics</button>
+            <button class="word-box">thing</button>
+            <button class="word-box">things</button>
+            </div>     
+            
+        <div id="adjectives" class="tab-content">
+            <button class="word-box">right</button>
+            <button class="word-box">left</button>
+            <button class="word-box">clear</button>
+            <button class="word-box">confusing</button>
+            <button class="word-box">interesting</button>
+            <button class="word-box">boring</button>
+            <button class="word-box">important</button>
+            <button class="word-box">helpful</button>
+            <button class="word-box">difficult</button>
+            <button class="word-box">easy</button>
+            <button class="word-box">hard</button>
+            <button class="word-box">comfortable</button>
+            <button class="word-box">uncomfortable</button>
+            <button class="word-box">clear</button>
+            <button class="word-box">unclear</button>
+            <button class="word-box">more</button>
+            <button class="word-box">less</button>
+            <button class="word-box">correct</button>
+            <button class="word-box">wrong</button>
+            <button class="word-box">new</button>
+            <button class="word-box">old</button>
+            <button class="word-box">next</button>
+            <button class="word-box">previous</button>
+            <button class="word-box">better</button>
+            <button class="word-box">happy</button>
+            <button class="word-box">sad</button>
+            <button class="word-box">big</button>
+            <button class="word-box">small</button>
+            <button class="word-box">quickly</button>
+            <button class="word-box">fast</button>
+            <button class="word-box">slow</button>
+            <button class="word-box">good</button>
+            <button class="word-box">bad</button>
+            <button class="word-box">warm</button>
+            <button class="word-box">cold</button>
+            <button class="word-box">bright</button>
+            <button class="word-box">dark</button>
+            <button class="word-box">loud</button>
+            <button class="word-box">louder</button>
+            <button class="word-box">quiet</button>
+            <button class="word-box">quieter</button>
+            <button class="word-box">confident</button>
+            <button class="word-box">frustrated</button>
+            <button class="word-box">nice</button>
+            <button class="word-box">different</button>
+            <button class="word-box">differently</button>
+            <button class="word-box">real</button>
+            <button class="word-box">really</button>
+            <button class="word-box">little</button>
+            <button class="word-box">missing</button>
+            <button class="word-box">sense</button>
+            <button class="word-box">last</button>
+            <button class="word-box">pretty</button>
+            <button class="word-box">well</button>
+            </div>
+
+        <div id="numbers" class="tab-content">
+            <button class="word-box">0</button>
+            <button class="word-box">1</button>
+            <button class="word-box">2</button>
+            <button class="word-box">3</button>
+            <button class="word-box">4</button>
+            <button class="word-box">5</button>
+            <button class="word-box">6</button>
+            <button class="word-box">7</button>
+            <button class="word-box">8</button>
+            <button class="word-box">9</button>
+            <button class="word-box">10</button>
+            <button class="word-box">25</button>
+            <button class="word-box">50</button>
+            <button class="word-box">75</button>
+            <button class="word-box">100</button>
+            <button class="word-box">1000</button>
+            <button class="word-box">%</button>
+            <button class="word-box">.</button>
+            <button class="word-box">-</button>
+            </div>
+
+        <div id="requests" class="tab-content">
+            <button class="word-box">Look at this</button>
+            <button class="word-box">Can you come here?</button>
+            <button class="word-box">Please wait</button>
+            <button class="word-box">Next slide</button>
+            <button class="word-box">Can you help me?</button>
+            <button class="word-box">Please listen</button>
+            <button class="word-box">Look over here</button>
+            <button class="word-box">Please stop</button>
+            <button class="word-box">Can you explain that?</button>
+            <button class="word-box">Could you repeat that?</button>
+            <button class="word-box">Can I get some help?</button>
+            <button class="word-box">Can you slow down?</button>
+            <button class="word-box">I don’t understand</button>
+            <button class="word-box">Please show me</button>
+            <button class="word-box">Can you write that down?</button>
+            <button class="word-box">Can you give me a minute?</button>
+            <button class="word-box">Could you point to that?</button>
+            <button class="word-box">Please go slower</button>
+            <button class="word-box">Can you show me?</button>
+            <button class="word-box">Give me a moment</button>
+            <button class="word-box">Please wait a moment</button>
+        </div>
+
+        <div id="partial-sentences" class="tab-content">
+            <button class="word-box">I don’t understand</button>
+            <button class="word-box">Can you help me with</button>
+            <button class="word-box">Is it OK if I</button>
+            <button class="word-box">What if I do</button>
+            <button class="word-box">I think I can</button>
+            <button class="word-box">Could you explain</button>
+            <button class="word-box">I’m not sure if</button>
+            <button class="word-box">I would like to</button>
+            <button class="word-box">What should I do if</button>
+            <button class="word-box">I need to</button>
+            <button class="word-box">Can I please</button>
+            <button class="word-box">How do I</button>
+            <button class="word-box">I feel like</button>
+            <button class="word-box">Do I need to</button>
+            <button class="word-box">I was wondering if</button>
+            <button class="word-box">Could I ask</button>
+            <button class="word-box">I don’t know how to</button>
+            <button class="word-box">What if I don’t</button>
+            <button class="word-box">Could you show me how to</button>
+            <button class="word-box">I don’t know</button>
+            <button class="word-box">I need to know if</button>
+            <button class="word-box">Can you tell me </button>
+            <button class="word-box">Can you tell me if</button>
+        </div>
+        
+            
+
+        </div>
+    <div>
+
+        <!-- <div class="suggestion-section">
+            <h2 class="suggestion-title">Word Suggestions</h2>
+            <div class="button-container" id="nextWordSuggestions"></div>
+        </div> -->
+
+    <!-- </div> -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+
+</body>
+</html>
