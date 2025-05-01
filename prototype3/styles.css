@@ -1,0 +1,173 @@
+body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    padding: 10px;
+    padding-left: 15px;;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    font-size: 1em;
+}
+
+button {
+    cursor: pointer;
+    font-size: 1.5em;
+    padding: 2%;
+}
+
+.output-and-buttons {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#text-output {
+    width: 60%;
+    height:200px;
+    display: block;
+   /* margin: 0 auto;*/
+    font-size: 1em;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.words-containers {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-color: grey;
+    gap: 5%;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.word-bank {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.common-words-container {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.word-box {
+    padding: 1%;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1em;
+    margin-top: 1%;
+}
+
+.word-box:hover {
+    background-color: #bdc3c7;
+}
+
+.control-btns button {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    gap: 20px;
+    padding: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    border-color: lightgray;
+    cursor: pointer;
+}
+
+.tab-container {
+    margin-top: 20px 0;
+    margin-bottom: 0;
+}
+
+.tab-btn {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 1em;
+}
+
+.tab-btn.active {
+    background-color: #3498db;
+    color: white;
+    border: 0.1em solid black;
+}
+
+.tab-btn:hover {
+    background-color: lightgrey;
+}
+
+.tab-content {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 3%;
+    border: 2px solid #ecf0f1; /* Border styling */
+    border-radius: 5px;    
+    background-color: white;
+    gap: 3%;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+.hint-section {
+    margin: 20px 0;
+}
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button-container button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 2%;
+
+}
+
+.more-options-btn {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: auto;
+    gap: 20px;
+    padding: 1%;
+    font-size: 20px;
+    border-radius: 10px;
+    border-color: lightgray;
+}
+
+.button-container button:hover {
+    background-color: #2980b9;
+}
+
+.suggestion-section {
+    width: 60%;
+    margin: 0 auto;
+}
+
+
+
