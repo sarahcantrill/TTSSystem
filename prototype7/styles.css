@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
+/* general styling */
 body {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     padding: 1%;
@@ -24,6 +25,7 @@ h2 {
     gap: 2%;
 }
 
+/* text output styling */
 .text-container {
     margin: 0 auto !important;
     width: 100%;
@@ -72,6 +74,7 @@ h2 {
     margin-bottom: 2%;
 }
 
+/* word container styling */
 .words-containers {
     padding-top: 2%;
     display: flex;
@@ -121,6 +124,7 @@ h2 {
     color: black;
 }
 
+/* control button styling */
 .control-btns button, .voice-select {
     display: flex;
     flex-direction: column;
@@ -290,7 +294,7 @@ button:focus {
     border-bottom: 3px solid;
 }
 
-/*each tab button */
+/*each tab button styling */
 .tab-btn[data-tab="starters"] {
     border-color: #5DADE2; /* inactive border color */
   }
@@ -395,7 +399,7 @@ button:focus {
     display: flex;
 }
 
-/* border colour */
+/* border word bank colour */
 #starters.tab-content.active {
     display: flex;
     border-color: #3498db; 
