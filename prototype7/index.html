@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
- <!--   <script type="module" src="script.js"></script> -->
    <script type="module" src="app.js"></script> 
     <title>TTS System</title>
 </head>
 <body>
-    <!-- <h1> Listen Up TTS</h1> -->
     <h1>Text-To-Speech System</h1>
 
 
     <section class="text-container">
-        <!-- <h2> Your text here:</h2> -->
         <section class="output-and-buttons">
         <textarea id="text-output" placeholder="your words here..."></textarea>
         <aside class="control-btns">
@@ -24,10 +21,6 @@
             <button class="reset-btn">Clear</button>
             <button class="undo-btn">Undo</button>
             <button class="repeat-btn">Repeat</button>
-            <!-- <button class="speak-btn">Speak</button> -->
-            <!-- <select id="voice-select" class="voice-select">
-                <option value="">Select Voice</option>
-            </select> -->
         </aside>
         <aside class="play-pause-container">
             <button class="speak-btn" aria-label="Play button">▶</button>
@@ -38,6 +31,7 @@
 
     <div class="sections-container">
 
+        <!-- commomn words -->
     <div class="left-container">
     <section class="common-words-container">
     <h2 class="common-words-title">Common words</h2>
@@ -65,15 +59,14 @@
     </section>
     </section>
 
+    <!-- predictive words -->
     <div class="suggestion-section">
         <h2 class="suggestion-title">Word Suggestions</h2>
         <div class="button-container" id="nextWordSuggestions"></div>
     </div>
     </div>
 
- <!--   <div class="button-container"></div>
-    
-    <button class="more-options-btn"> More Options</button> -->
+    <!-- word bank tabs -->
 <div class="word-bank">
     <h2>Word Bank</h2>
     <div class="tab-container">
@@ -90,9 +83,9 @@
         <button class="tab-btn"  data-tab="partial-sentences">Partial Sentences</button>
 
 
-      <!--  <button class="tab-btn"  data-tab="suggestions">Suggestions</button> -->
     </div>
 
+    <!-- starters word tab content -->
     <div id="starters" class="tab-content active">
         <button class="word-box">Hi</button>
         <button class="word-box">Hello</button>
@@ -161,6 +154,7 @@
     </div>
     
 
+        <!-- questions word tab content -->
         <div id="questions" class="tab-content">
             <button class="word-box">who</button>
             <button class="word-box">what</button>
@@ -169,12 +163,6 @@
             <button class="word-box">why</button>
             <button class="word-box">how</button>
             <button class="word-box">can I</button>
-            <!-- <button class="word-box">could you</button>
-            <button class="word-box">please</button>
-            <button class="word-box">do you</button>
-            <button class="word-box">could</button>
-            <button class="word-box">would</button>
-            <button class="word-box">is it?</button> -->
             <button class="word-box">Can you help me?</button>
             <button class="word-box">Can you explain that?</button>
             <button class="word-box">What does this mean?</button>
@@ -210,6 +198,7 @@
         </div>
         
 
+        <!-- responses word tab content -->
         <div id="responses" class="tab-content">
             <button class="word-box">yes</button>
             <button class="word-box">no</button>
@@ -239,6 +228,7 @@
             <button class="word-box">thanks</button>
             </div>
 
+        <!-- subjects word tab content -->
         <div id="subjects" class="tab-content">
             <button class="word-box">I</button>
             <button class="word-box">I'm</button>
@@ -263,7 +253,8 @@
             <button class="word-box">all</button>
             <button class="word-box">the team</button>
             </div>
-                     
+     
+        <!-- verbs word tab content -->
         <div id="verbs" class="tab-content">
             <button class="word-box">am</button>
             <button class="word-box">is</button>
@@ -328,6 +319,7 @@
         </div>
             
 
+        <!-- common word tab content -->
         <div id="common" class="tab-content">
             <button class="word-box">and</button>
             <button class="word-box">or</button>
@@ -365,6 +357,7 @@
             <button class="word-box">same</button>
             </div>
             
+        <!-- topics word tab content -->
         <div id="topics" class="tab-content">
             <button class="word-box">idea</button>
             <button class="word-box">answer</button>
@@ -400,7 +393,8 @@
             <button class="word-box">thing</button>
             <button class="word-box">things</button>
             </div>     
-            
+        
+        <!-- adjective word tab content -->
         <div id="adjectives" class="tab-content">
             <button class="word-box">right</button>
             <button class="word-box">left</button>
@@ -458,6 +452,7 @@
             <button class="word-box">well</button>
             </div>
 
+        <!-- numbers word tab content -->
         <div id="numbers" class="tab-content">
             <button class="word-box">0</button>
             <button class="word-box">1</button>
@@ -480,6 +475,7 @@
             <button class="word-box">-</button>
             </div>
 
+        <!-- requests word tab content -->
         <div id="requests" class="tab-content">
             <button class="word-box">Look at this</button>
             <button class="word-box">Can you come here?</button>
@@ -504,6 +500,7 @@
             <button class="word-box">Please wait a moment</button>
         </div>
 
+        <!-- partial sentences word tab content -->
         <div id="partial-sentences" class="tab-content">
             <button class="word-box">I don’t understand</button>
             <button class="word-box">Can you help me with</button>
@@ -533,14 +530,7 @@
             
 
         </div>
-    <div>
-
-        <!-- <div class="suggestion-section">
-            <h2 class="suggestion-title">Word Suggestions</h2>
-            <div class="button-container" id="nextWordSuggestions"></div>
-        </div> -->
-
-    <!-- </div> -->
+    </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 

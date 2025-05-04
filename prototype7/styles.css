@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
+/* general styling */
 body {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     padding: 1%;
@@ -16,12 +17,6 @@ h2 {
     font-size: 1em;
 }
 
-/* button {
-    cursor: pointer;
-    font-size: 1.5em;
-    padding: 2%;
-} */
-
 .output-and-buttons {
     display: flex;
     align-items: flex-start;
@@ -30,6 +25,7 @@ h2 {
     gap: 2%;
 }
 
+/* text output styling */
 .text-container {
     margin: 0 auto !important;
     width: 100%;
@@ -52,23 +48,6 @@ h2 {
     }
   } 
 
-/* three main sections to the same width */
-/* .common-words-container, .word-bank, .suggestion-section {
-    width: 70%;
-    margin: 2% auto;
-    box-sizing: border-box;
-}
-
-  
-  @media (max-width: 768px) {
-    .common-words-container,
-    .word-bank,
-    .suggestion-section {
-      width: 100%;
-      margin: 2% auto;
-    }
-  }   */
-
   .sections-container {
     display: flex;
     /* gap: 1rem; */
@@ -81,8 +60,6 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    /* margin-left: 2%; */
-    /* font-size: 1.5em; */
   }
 
   .word-bank {
@@ -97,6 +74,7 @@ h2 {
     margin-bottom: 2%;
 }
 
+/* word container styling */
 .words-containers {
     padding-top: 2%;
     display: flex;
@@ -105,7 +83,6 @@ h2 {
     border-color: grey;
     gap: 2%;
     width: 100%;
-    /* margin: 0 auto; */
 }
 
 .common-words-container .word-box {
@@ -117,12 +94,6 @@ h2 {
     font-size: 1.2em;
     padding: 1.8% 2.5%;
 }
-
-/* made to be standard  */
-/* .word-bank {
-    width: 80%;
-    margin: 0 auto;
-}*/
 
 .common-words-container {
     background-color: #D6EAF8;
@@ -153,11 +124,11 @@ h2 {
     color: black;
 }
 
+/* control button styling */
 .control-btns button, .voice-select {
     display: flex;
     flex-direction: column;
     margin: 12%;
-    /* gap: 10%; */
     padding: 0.5em 2em; 
     font-size: 1.5em;
     border-radius: 10px;
@@ -182,7 +153,6 @@ h2 {
     padding: 0.5em; 
     font-size: 1em; 
     border: 1px solid lightgray; 
-    /* margin-bottom: 1%; */
     box-sizing: border-box; 
     margin-top: -3em;
 }
@@ -193,7 +163,6 @@ h2 {
 }
 
 .play-pause-container button:hover {
-    /* background-color: green; */
     color: white;
 }
 
@@ -202,9 +171,7 @@ h2 {
 }
 
 .play-pause-container {
-    /* border: 2px solid red; Temporary to visualize */
     width: 15%;
-    /* border: 2px solid red; */
     margin-left: auto; 
     display: flex;
     flex-direction: column;
@@ -220,7 +187,6 @@ h2 {
 }
 
 .control-btns {
-    /* border: 2px solid red; Adds a visible border */
     width: 15%;
 }
 
@@ -242,7 +208,6 @@ h2 {
 .speak-btn {
     background-color: green;
     color: white;
-    /* padding: 20%; */
     height: 4em;
     width: 80%;
 }
@@ -254,7 +219,6 @@ h2 {
 }
 
 button:focus {
-    /* restore colours  */
     background-color: inherit;
     color: inherit;
   }
@@ -267,7 +231,6 @@ button:focus {
   .undo-btn:focus {
     background-color: lightgrey !important;
     color: black !important;
-    /* color: white !important; */
   }
   
   .speak-btn:focus {
@@ -284,20 +247,10 @@ button:focus {
     color: white !important;
   }
   
-  /* For standard word boxes */
-  /* .word-box:focus {
-    background-color: #3498db !important;
-    color: white !important;
-  } */
 
 .play-pause-container button {
     display: flex;
     flex-direction: column;
-    /* margin: 20% 0; */
-    /* height: 40%;
-    height: 4em;
-    width: 50%;
-    margin: 10%; */
     gap: 10%;
     padding: 10%;
     font-size: 2em;
@@ -318,7 +271,6 @@ button:focus {
   } 
 
 .tab-container {
-    /* margin-top: 20px 0; */
     margin-bottom: 0;
     display: flex;
     flex-wrap: wrap;
@@ -337,20 +289,14 @@ button:focus {
 }
 
 .tab-btn.active {
-    /* background-color: #3498db; */
     color: white;
     border: none;
     border-bottom: 3px solid;
 }
 
-/* .tab-btn:hover {
-    background-color: lightgrey;
-    color: black;
-} */
-
-/*each tab button */
+/*each tab button styling */
 .tab-btn[data-tab="starters"] {
-    border-color: #5DADE2; /* Inactive border color */
+    border-color: #5DADE2; /* inactive border color */
   }
   .tab-btn[data-tab="starters"].active {
     background-color: #5DADE2; /* active background */
@@ -443,7 +389,7 @@ button:focus {
     flex-wrap: wrap;
     justify-content: center;
     padding: 3%;
-    border: 2px solid #ecf0f1; /* Border styling */
+    border: 2px solid #ecf0f1; 
     border-radius: 5px;    
     background-color: white;
     gap: 2%;
@@ -453,7 +399,7 @@ button:focus {
     display: flex;
 }
 
-/* border colour */
+/* border word bank colour */
 #starters.tab-content.active {
     display: flex;
     border-color: #3498db; 
@@ -532,7 +478,6 @@ button:focus {
     min-width: 10%;
     text-align: center;
     margin: 1%;
-    /* padding: 2%; */
 }
 
 .more-options-btn {
@@ -550,11 +495,6 @@ button:focus {
 .button-container button:hover {
     background-color: #2980b9;
 }
-
-/* .suggestion-section {
-    width: 60%;
-    margin: 0 auto;
-} */
 
 button {
     transition: background-color 1s;
