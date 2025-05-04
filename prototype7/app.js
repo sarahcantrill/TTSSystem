@@ -18,11 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log("All elements selected correctly.");
 
-    // Undo functionality
+    // undo functionality
     let textHistory = [''];
     let currentHistoryIndex = 0;
 
-    // TensorFlow vars
+    // tensorFlow vars
     let wordIndex = {};
     let reverseWordIndex = {};
     let model = null;
@@ -48,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         //existing options cleared
         voiceSelect.innerHTML = '<option value="">Select Voice</option>';
 
-        //const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
         const allVoices = synth.getVoices();
         // filter to only include the requested voices
         const allowedVoiceNames = ['Daniel', 'Arthur', 'Martha', 'Google UK English Female', 'Google UK English Male'];
@@ -66,12 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // default voice
         if (voices.length > 0) {
-            // console.log("male");
-            // let defaultVoice = voices.find(voice =>
-            //     voice.lang.startsWith('en-GB') &&
-            //     voice.name.toLowerCase().includes('Male')
-                
-            // );
+            
             let voices = speechSynthesis.getVoices();
             // Find all matching voices
             let matchingVoices = voices.filter(voice =>
@@ -80,15 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
             let defaultVoice = matchingVoices.length > 0 ? matchingVoices[matchingVoices.length - 1] : null;
             console.log(defaultVoice);
-            
-
-            // if (!defaultVoice) {
-            //     defaultVoice = voices.find(voice =>
-            //         voice.lang.includes('en-') &&
-            //         (voice.name.toLowerCase().includes('female') ||
-            //          voice.name.toLowerCase().includes('male'))
-            //     ) || voices[0];
-            // }
 
             if (defaultVoice) {
                 voiceSelect.value = voices.indexOf(defaultVoice);
@@ -106,26 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         populateVoiceList(); // Fallback in case onvoiceschanged is not triggered
     }
-    
-
-    // voice changes
-    // voiceSelect.addEventListener("change", (event) => {
-    //     const voices = synth.getVoices()
-    //     selectedVoice = voices[event.target.value]
-    // })
-
-    // voiceSelect.addEventListener("change", (event) => {
-    //     const selectedIndex = event.target.value;
-    //     const voices = synth.getVoices().filter(voice => voice.lang.startsWith('en-GB'));
-        
-    //     // validating
-    //     if (selectedIndex !== "" && voices[selectedIndex]) {
-    //         selectedVoice = voices[selectedIndex];
-    //         console.log("Selected Voice:", selectedVoice.name);
-    //     } else {
-    //         console.warn("Invalid voice selection");
-    //     }
-    // });
 
     voiceSelect.addEventListener("change", (event) => {
         const selectedIndex = event.target.value;
@@ -165,8 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         //new speech utterance
-        // const utterance = new SpeechSynthesisUtterance(textToSpeak)
-        // Create new speech utterance
         currentUtterance = new SpeechSynthesisUtterance(textToSpeak)
 
         //selected voice if available
@@ -473,8 +436,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 inputLength: 5  
             }));
 
-            //potnetially remove this 
-           // model.add(tf.layers.flatten());
 
            // LSTM layer for better sequence learning
                 model.add(tf.layers.lstm({
@@ -562,9 +523,9 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     
-        // Convert to tensors and ensure correct data type (float32 for inputs)
-        const xs = tf.tensor2d(sequences, [sequences.length, 5], 'float32'); // Shape [number of sequences, sequence length]
-        const ys = tf.tensor1d(nextWords, 'float32'); // Labels (integer indices of the next word)
+        // conver to tensors and ensure correct data type (float32 for inputs)
+        const xs = tf.tensor2d(sequences, [sequences.length, 5], 'float32'); // [number of sequences, sequence length]
+        const ys = tf.tensor1d(nextWords, 'float32'); // labels (integer indices of the next word)
 
         console.log(`Training model with ${sequences.length} sequences...`);
 
@@ -575,21 +536,12 @@ document.addEventListener("DOMContentLoaded", () => {
             shuffle: true,
             verbose: 0,
             callbacks: {
-                // onEpochEnd: (epoch, logs) => {
-                //     if (epoch % 10 === 0) {
-                //         console.log(`Epoch ${epoch}: loss = ${logs.loss.toFixed(4)}, accuracy = ${logs.acc.toFixed(4)}`);
-                //     }
-                // }
+               
             }
         });
 
-        // model.add(tf.layers.lstm({
-        //     units: 64,
-        //     returnSequences: false,
-        //     inputShape: [3, 16]  // for your embedding output
-        //   }));
     
-        // Clean tensors
+        // clean tensors
         xs.dispose();
         ys.dispose();
     }
@@ -602,31 +554,24 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const words = text.toLowerCase().trim().split(/\s+/).slice(-5);
             
-            // Get the last three words or whatever is available
-            // const lastThreeWords = words.slice(-3).map(w => {
-            //     return wordIndex[w.toLowerCase()] || 0;
-            // });
+            // get the last three words or whatever is available
+            
             const wordIndices = words.map(w => wordIndex[w.toLowerCase()] || 0);
 
             //ensure 5 tokens 
             while (wordIndices.length < 5) {
                 wordIndices.unshift(0);
             }
-            
-            // Create the tensor input with proper shape
-            // const input = tf.tensor2d([lastThreeWords], [1, 3], 'float32'); 
-            // const prediction = model.predict(input);
-            // const values = prediction.dataSync();
 
             //take last 5 if too long 
             const inputIndices = wordIndices.slice(-5);
-            // Create tensor
+            // create tensor
             const inputTensor = tf.tensor2d([inputIndices], [1, 5], 'float32');
-            // Get prediction
+            // get prediction
             const prediction = model.predict(inputTensor);
             const values = prediction.dataSync();
             
-            // Get top 5 predictions
+            // get top 5 predictions
             const indices = Array.from(values)
                 .map((value, index) => ({ value, index }))
                 .sort((a, b) => b.value - a.value)
@@ -638,9 +583,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const suggestions = indices.map(index => reverseWordIndex[index])
                 .filter(word => word);
             
-            // clean tensors
-            // input.dispose();
-            // prediction.dispose();
+           
             inputTensor.dispose();
             prediction.dispose();
 
@@ -702,12 +645,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return ['the', 'and', 'to', 'a', 'in', 'is', 'it', 'I', 'that', 'was', 'for', 'on', 'with'];
     }
 
-    // Function to add word to text output
+    // function to add word to text output
     function addWordToOutput(word) {
         const currentText = textOutput.value;
         let newText;
 
-        // Check if space is needed before the new word
+        //check if space is needed before the new word
         if (currentText.length === 0 || currentText.endsWith(' ') || 
             currentText.endsWith('.') || currentText.endsWith('?') || 
             currentText.endsWith('!')) {
@@ -716,7 +659,7 @@ document.addEventListener("DOMContentLoaded", () => {
             newText = currentText + ' ' + word;
         }
         
-        // Update text and history
+        // update text and history
         textHistory = textHistory.slice(0, currentHistoryIndex + 1);
         textHistory.push(newText);
         currentHistoryIndex = textHistory.length - 1;
@@ -725,7 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateWordSuggestions();
     }
 
-    // Update word suggestions
+    // update word suggestions
     async function updateWordSuggestions() {
         nextWordSuggestions.innerHTML = '';
         const text = textOutput.value.trim();
@@ -736,13 +679,13 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-        // Try to get predictions from TensorFlow model
+        // try to get predictions from TensorFlow model
         const predictions = await predictNextWords(text);
         
         if (predictions && predictions.length > 0) {
             addSuggestionButtons(predictions.slice(0, 10));
         } else {
-            // Fallback to rule-based predictions
+            // fallback to rule-based predictions
             const words = text.toLowerCase().split(/\s+/);
             const lastWord = words[words.length - 1];
             
@@ -860,10 +803,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("TensorFlow is not available. Using fallback suggestions only.");
         }
         
-        // Initial suggestions
+        // initial suggestions
         updateWordSuggestions();
     }
 
-    // Start the application
+    // start the application
     init();
 });
