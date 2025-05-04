@@ -11,7 +11,7 @@ TTSSystem is designed to convert user-inputted text into spoken words, incorpora
 - **Text-to-Speech Conversion**: Transforms written text into audible speech.
 - **Predictive Word Algorithm**: Suggests next words based on the current input to expedite sentence formation.
 - **User-Friendly Interface**: Simple and accessible UI for ease of use.
-- **Modular Prototypes**: Multiple development stages (`prototype2` to `prototype7`) showcasing the evolution of the system.
+- **Modular Prototypes**: Multiple development stages (`prototype1` to `prototype7`) showcasing the evolution of the system.
 
 
 ## Getting Started
